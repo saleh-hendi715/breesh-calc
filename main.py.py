@@ -1,0 +1,679 @@
+# -*- coding: utf-8 -*-
+"""====================================================================
+
+  BREESH CALC PRO v3.0 - ULTIMATE ENGINEERING & SCIENTIFIC SUITE
+  تطوير: المهندس صالح بريش
+====================================================================
+"""
+
+import math
+import tkinter as tk
+from tkinter import messagebox, ttk
+
+
+class ModernBreeshCalculator:
+
+  def __init__(self, root):
+    self.root = root
+    self.root.title("BREESH Calc Pro v3.0 - المهندس صالح بريش")
+    self.root.geometry("580x760")
+    self.root.resizable(True, True)
+    self.root.configure(bg="#0F1016")
+
+    # الألوان والتصميم Modern Dark Palette
+    self.BG_MAIN = "#0F1016"
+    self.BG_CARD = "#161823"
+    self.BG_BTN = "#1F2232"
+    self.BG_NUM = "#282C40"
+    self.ACCENT_GREEN = "#00FF88"
+    self.ACCENT_CYAN = "#00E5FF"
+    self.ACCENT_ORANGE = "#FF9D00"
+    self.ACCENT_RED = "#FF3B30"
+    self.TEXT_MAIN = "#FFFFFF"
+    self.TEXT_MUTED = "#8A8FAD"
+
+    self.expression = ""
+    self.memory = 0.0
+
+    self.setup_header()
+    self.setup_tabs()
+
+  def setup_header(self):
+    header = tk.Frame(self.root, bg=self.BG_MAIN)
+    header.pack(fill="x", padx=15, pady=(10, 5))
+
+    tk.Label(
+        header,
+        text="⚡ BREESH ENGINEERING SUITE ⚡",
+        font=("Consolas", 14, "bold"),
+        fg=self.ACCENT_GREEN,
+        bg=self.BG_MAIN,
+    ).pack()
+    tk.Label(
+        header,
+        text="الحاسبة الهندسية الشاملة والمبرمج ومحول الوحدات | المهندس صالح بريش",
+        font=("Tahoma", 8, "bold"),
+        fg=self.ACCENT_CYAN,
+        bg=self.BG_MAIN,
+    ).pack(pady=(2, 0))
+
+  def setup_tabs(self):
+    style = ttk.Style()
+    style.theme_use("default")
+    style.configure("TNotebook", background=self.BG_MAIN, borderwidth=0)
+    style.configure(
+        "TNotebook.Tab",
+        background=self.BG_CARD,
+        foreground=self.TEXT_MUTED,
+        font=("Tahoma", 8, "bold"),
+        padding=[10, 5],
+    )
+    style.map(
+        "TNotebook.Tab",
+        background=[("selected", self.BG_BTN)],
+        foreground=[("selected", self.ACCENT_GREEN)],
+    )
+
+    notebook = ttk.Notebook(self.root)
+    notebook.pack(fill="both", expand=True, padx=10, pady=5)
+
+    tab_sci = tk.Frame(notebook, bg=self.BG_MAIN)
+    tab_eng = tk.Frame(notebook, bg=self.BG_MAIN)
+    tab_prog = tk.Frame(notebook, bg=self.BG_MAIN)
+    tab_conv = tk.Frame(notebook, bg=self.BG_MAIN)
+
+    notebook.add(tab_sci, text=" 🧮 علمية مطورة ")
+    notebook.add(tab_eng, text=" 📐 هندسة وجبر ")
+    notebook.add(tab_prog, text=" 💻 المبرمج (Bases) ")
+    notebook.add(tab_conv, text=" 🔄 محول الشامل ")
+
+    self.build_sci_tab(tab_sci)
+    self.build_eng_tab(tab_eng)
+    self.build_prog_tab(tab_prog)
+    self.build_conv_tab(tab_conv)
+
+  # ==========================================
+  # 1. التبويب الأول: الحاسبة العلمية الشاملة
+  # ==========================================
+  def build_sci_tab(self, parent):
+    disp_frame = tk.Frame(
+        parent,
+        bg=self.BG_CARD,
+        highlightbackground=self.ACCENT_GREEN,
+        highlightthickness=1,
+    )
+    disp_frame.pack(fill="x", padx=8, pady=8)
+
+    self.expr_lbl = tk.Label(
+        disp_frame,
+        text="",
+        font=("Consolas", 10),
+        fg=self.TEXT_MUTED,
+        bg=self.BG_CARD,
+        anchor="e",
+    )
+    self.expr_lbl.pack(fill="x", padx=10, pady=(6, 0))
+
+    self.res_lbl = tk.Label(
+        disp_frame,
+        text="0",
+        font=("Consolas", 22, "bold"),
+        fg=self.ACCENT_GREEN,
+        bg=self.BG_CARD,
+        anchor="e",
+    )
+    self.res_lbl.pack(fill="x", padx=10, pady=(0, 6))
+
+    btn_frame = tk.Frame(parent, bg=self.BG_MAIN)
+    btn_frame.pack(fill="both", expand=True, padx=5, pady=5)
+
+    buttons = [
+        [
+            ("MC", self.ACCENT_ORANGE, lambda: self.mem_op("MC")),
+            ("MR", self.ACCENT_ORANGE, lambda: self.mem_op("MR")),
+            ("M+", self.ACCENT_ORANGE, lambda: self.mem_op("M+")),
+            ("M-", self.ACCENT_ORANGE, lambda: self.mem_op("M-")),
+            ("C", self.ACCENT_RED, self.clear_all),
+            ("DEL", self.ACCENT_RED, self.del_last),
+        ],
+        [
+            ("sin", self.TEXT_MAIN, lambda: self.app("sin(")),
+            ("cos", self.TEXT_MAIN, lambda: self.app("cos(")),
+            ("tan", self.TEXT_MAIN, lambda: self.app("tan(")),
+            ("asin", self.TEXT_MUTED, lambda: self.app("asin(")),
+            ("acos", self.TEXT_MUTED, lambda: self.app("acos(")),
+            ("atan", self.TEXT_MUTED, lambda: self.app("atan(")),
+        ],
+        [
+            ("sinh", self.TEXT_MUTED, lambda: self.app("sinh(")),
+            ("cosh", self.TEXT_MUTED, lambda: self.app("cosh(")),
+            ("tanh", self.TEXT_MUTED, lambda: self.app("tanh(")),
+            ("x²", self.TEXT_MAIN, lambda: self.app("**2")),
+            ("x³", self.TEXT_MAIN, lambda: self.app("**3")),
+            ("xⁿ", self.TEXT_MAIN, lambda: self.app("**")),
+        ],
+        [
+            ("√", self.TEXT_MAIN, lambda: self.app("sqrt(")),
+            ("∛", self.TEXT_MAIN, lambda: self.app("cbrt(")),
+            ("ln", self.TEXT_MAIN, lambda: self.app("log(")),
+            ("log₁₀", self.TEXT_MAIN, lambda: self.app("log10(")),
+            ("eˣ", self.TEXT_MAIN, lambda: self.app("exp(")),
+            ("10ˣ", self.TEXT_MAIN, lambda: self.app("10**")),
+        ],
+        [
+            ("(", self.ACCENT_CYAN, lambda: self.app("(")),
+            (")", self.ACCENT_CYAN, lambda: self.app(")")),
+            ("n!", self.TEXT_MAIN, lambda: self.app("fact(")),
+            ("|x|", self.TEXT_MAIN, lambda: self.app("abs(")),
+            ("%", self.ACCENT_CYAN, lambda: self.app("%")),
+            ("÷", self.ACCENT_CYAN, lambda: self.app("/")),
+        ],
+        [
+            ("7", self.TEXT_MAIN, lambda: self.app("7")),
+            ("8", self.TEXT_MAIN, lambda: self.app("8")),
+            ("9", self.TEXT_MAIN, lambda: self.app("9")),
+            ("π", self.ACCENT_CYAN, lambda: self.app("pi")),
+            ("e", self.ACCENT_CYAN, lambda: self.app("e")),
+            ("×", self.ACCENT_CYAN, lambda: self.app("*")),
+        ],
+        [
+            ("4", self.TEXT_MAIN, lambda: self.app("4")),
+            ("5", self.TEXT_MAIN, lambda: self.app("5")),
+            ("6", self.TEXT_MAIN, lambda: self.app("6")),
+            ("1/x", self.TEXT_MAIN, lambda: self.app("1/(")),
+            ("MOD", self.ACCENT_CYAN, lambda: self.app("%")),
+            ("-", self.ACCENT_CYAN, lambda: self.app("-")),
+        ],
+        [
+            ("1", self.TEXT_MAIN, lambda: self.app("1")),
+            ("2", self.TEXT_MAIN, lambda: self.app("2")),
+            ("3", self.TEXT_MAIN, lambda: self.app("3")),
+            ("±", self.TEXT_MAIN, lambda: self.app("-")),
+            ("+", self.ACCENT_CYAN, lambda: self.app("+")),
+            ("=", self.ACCENT_GREEN, self.eval_expr),
+        ],
+        [("0", self.TEXT_MAIN, lambda: self.app("0")), (".", self.TEXT_MAIN, lambda: self.app("."))],
+    ]
+
+    for r_idx, row in enumerate(buttons):
+      btn_frame.rowconfigure(r_idx, weight=1)
+      c_offset = 0
+      for c_idx, (text, color, cmd) in enumerate(row):
+        col_span = 2 if text == "0" and len(row) == 2 else 1
+        btn_frame.columnconfigure(c_idx, weight=1)
+
+        bg_col = self.BG_NUM if text.isdigit() or text in [".", "±"] else self.BG_BTN
+        if text == "=":
+          bg_col = "#007A3D"
+
+        btn = tk.Button(
+            btn_frame,
+            text=text,
+            font=("Consolas", 10, "bold"),
+            fg=color,
+            bg=bg_col,
+            activebackground=self.ACCENT_GREEN,
+            activeforeground="#000",
+            bd=0,
+            command=cmd,
+        )
+        btn.grid(
+            row=r_idx,
+            column=c_idx + c_offset,
+            columnspan=col_span,
+            sticky="nsew",
+            padx=2,
+            pady=2,
+        )
+        if col_span > 1:
+          c_offset += 1
+
+  def app(self, val):
+    self.expression += str(val)
+    self.expr_lbl.config(text=self.expression)
+
+  def clear_all(self):
+    self.expression = ""
+    self.expr_lbl.config(text="")
+    self.res_lbl.config(text="0")
+
+  def del_last(self):
+    self.expression = self.expression[:-1]
+    self.expr_lbl.config(text=self.expression)
+
+  def mem_op(self, op):
+    try:
+      curr = float(self.res_lbl.cget("text"))
+      if op == "MC":
+        self.memory = 0.0
+      elif op == "MR":
+        self.app(str(self.memory))
+      elif op == "M+":
+        self.memory += curr
+      elif op == "M-":
+        self.memory -= curr
+    except Exception:
+      pass
+
+  def eval_expr(self):
+    try:
+      expr = self.expression.replace("π", "math.pi").replace("e", "math.e")
+      safe_dict = {
+          "math": math,
+          "sin": lambda x: math.sin(math.radians(x)),
+          "cos": lambda x: math.cos(math.radians(x)),
+          "tan": lambda x: math.tan(math.radians(x)),
+          "asin": lambda x: math.degrees(math.asin(x)),
+          "acos": lambda x: math.degrees(math.acos(x)),
+          "atan": lambda x: math.degrees(math.atan(x)),
+          "sinh": math.sinh,
+          "cosh": math.cosh,
+          "tanh": math.tanh,
+          "sqrt": math.sqrt,
+          "cbrt": lambda x: x ** (1 / 3),
+          "log10": math.log10,
+          "log": math.log,
+          "exp": math.exp,
+          "fact": math.factorial,
+          "abs": abs,
+          "pi": math.pi,
+          "e": math.e,
+      }
+      res = eval(expr, {"__builtins__": None}, safe_dict)
+      out = f"{res:.8g}" if isinstance(res, float) else str(res)
+      self.res_lbl.config(text=out)
+    except Exception:
+      self.res_lbl.config(text="خطأ رياضي")
+
+  # ==========================================
+  # 2. التبويب الثاني: هندسة وجبر (Equations & Geometry)
+  # ==========================================
+  def build_eng_tab(self, parent):
+    frame = tk.Frame(parent, bg=self.BG_CARD)
+    frame.pack(fill="both", expand=True, padx=10, pady=10)
+
+    # حاسبة المعادلة التربيعية ax² + bx + c = 0
+    tk.Label(
+        frame,
+        text="📐 حل المعادلة التربيعية (ax² + bx + c = 0)",
+        font=("Tahoma", 10, "bold"),
+        fg=self.ACCENT_CYAN,
+        bg=self.BG_CARD,
+    ).pack(anchor="w", padx=10, pady=(10, 5))
+
+    quad_f = tk.Frame(frame, bg=self.BG_CARD)
+    quad_f.pack(fill="x", padx=10)
+
+    tk.Label(quad_f, text="a:", fg=self.TEXT_MAIN, bg=self.BG_CARD).grid(
+        row=0, column=0
+    )
+    self.e_a = tk.Entry(quad_f, width=6, bg=self.BG_BTN, fg=self.ACCENT_GREEN)
+    self.e_a.grid(row=0, column=1, padx=4)
+
+    tk.Label(quad_f, text="b:", fg=self.TEXT_MAIN, bg=self.BG_CARD).grid(
+        row=0, column=2
+    )
+    self.e_b = tk.Entry(quad_f, width=6, bg=self.BG_BTN, fg=self.ACCENT_GREEN)
+    self.e_b.grid(row=0, column=3, padx=4)
+
+    tk.Label(quad_f, text="c:", fg=self.TEXT_MAIN, bg=self.BG_CARD).grid(
+        row=0, column=4
+    )
+    self.e_c = tk.Entry(quad_f, width=6, bg=self.BG_BTN, fg=self.ACCENT_GREEN)
+    self.e_c.grid(row=0, column=5, padx=4)
+
+    btn_quad = tk.Button(
+        quad_f,
+        text="احسب الجذرين",
+        bg=self.ACCENT_GREEN,
+        fg="#000",
+        font=("Tahoma", 8, "bold"),
+        command=self.solve_quad,
+    )
+    btn_quad.grid(row=0, column=6, padx=8)
+
+    self.lbl_quad_res = tk.Label(
+        frame,
+        text="النتائج ستظهر هنا...",
+        font=("Consolas", 10),
+        fg=self.ACCENT_ORANGE,
+        bg=self.BG_CARD,
+    )
+    self.lbl_quad_res.pack(anchor="w", padx=10, pady=5)
+
+    tk.Frame(frame, bg=self.BG_MAIN, height=2).pack(
+        fill="x", padx=10, pady=10
+    )
+
+    # حاسبة المساحات والحجوم الهندسية
+    tk.Label(
+        frame,
+        text="🧊 المساحات والأشكال الهندسية",
+        font=("Tahoma", 10, "bold"),
+        fg=self.ACCENT_CYAN,
+        bg=self.BG_CARD,
+    ).pack(anchor="w", padx=10, pady=5)
+
+    self.geo_shape = tk.StringVar(value="مساحة الدائرة")
+    shapes = [
+        "مساحة الدائرة",
+        "محيط الدائرة",
+        "حجم الكرة",
+        "حجم الأسطوانة",
+        "مساحة المثلث",
+    ]
+    cb_shape = ttk.Combobox(
+        frame, textvariable=self.geo_shape, values=shapes, state="readonly"
+    )
+    cb_shape.pack(fill="x", padx=10, pady=5)
+    cb_shape.bind("<<ComboboxSelected>>", self.update_geo_inputs)
+
+    self.geo_inputs_frame = tk.Frame(frame, bg=self.BG_CARD)
+    self.geo_inputs_frame.pack(fill="x", padx=10, pady=5)
+
+    self.lbl_geo_1 = tk.Label(
+        self.geo_inputs_frame, text="نصف القطر (r):", bg=self.BG_CARD, fg="#fff"
+    )
+    self.lbl_geo_1.grid(row=0, column=0, sticky="w")
+    self.e_geo_1 = tk.Entry(
+        self.geo_inputs_frame, bg=self.BG_BTN, fg=self.ACCENT_GREEN
+    )
+    self.e_geo_1.grid(row=0, column=1, padx=5, pady=2)
+
+    self.lbl_geo_2 = tk.Label(
+        self.geo_inputs_frame, text="الارتفاع (h):", bg=self.BG_CARD, fg="#fff"
+    )
+    self.e_geo_2 = tk.Entry(
+        self.geo_inputs_frame, bg=self.BG_BTN, fg=self.ACCENT_GREEN
+    )
+
+    btn_geo = tk.Button(
+        frame,
+        text="احسب الناتج الهندسي",
+        bg=self.ACCENT_CYAN,
+        fg="#000",
+        font=("Tahoma", 9, "bold"),
+        command=self.calc_geometry,
+    )
+    btn_geo.pack(fill="x", padx=10, pady=10)
+
+    self.lbl_geo_res = tk.Label(
+        frame,
+        text="النتيجة: 0",
+        font=("Consolas", 12, "bold"),
+        fg=self.ACCENT_GREEN,
+        bg=self.BG_CARD,
+    )
+    self.lbl_geo_res.pack(anchor="w", padx=10, pady=5)
+
+  def solve_quad(self):
+    try:
+      a = float(self.e_a.get())
+      b = float(self.e_b.get())
+      c = float(self.e_c.get())
+      d = b**2 - 4 * a * c
+      if d > 0:
+        x1 = (-b + math.sqrt(d)) / (2 * a)
+        x2 = (-b - math.sqrt(d)) / (2 * a)
+        self.lbl_quad_res.config(text=f"x1 = {x1:.4f}  |  x2 = {x2:.4f}")
+      elif d == 0:
+        x = -b / (2 * a)
+        self.lbl_quad_res.config(text=f"جذر مكرر: x = {x:.4f}")
+      else:
+        real = -b / (2 * a)
+        imag = math.sqrt(-d) / (2 * a)
+        self.lbl_quad_res.config(
+            text=f"جذور مركبة: {real:.2f} ± {imag:.2f}i"
+        )
+    except Exception:
+      self.lbl_quad_res.config(text="خطأ في الإدخال!")
+
+  def update_geo_inputs(self, event=None):
+    s = self.geo_shape.get()
+    if s in ["مساحة الدائرة", "محيط الدائرة", "حجم الكرة"]:
+      self.lbl_geo_1.config(text="نصف القطر (r):")
+      self.lbl_geo_2.grid_forget()
+      self.e_geo_2.grid_forget()
+    elif s == "حجم الأسطوانة":
+      self.lbl_geo_1.config(text="نصف القطر (r):")
+      self.lbl_geo_2.grid(row=1, column=0, sticky="w")
+      self.lbl_geo_2.config(text="الارتفاع (h):")
+      self.e_geo_2.grid(row=1, column=1, padx=5, pady=2)
+    elif s == "مساحة المثلث":
+      self.lbl_geo_1.config(text="القاعدة (b):")
+      self.lbl_geo_2.grid(row=1, column=0, sticky="w")
+      self.lbl_geo_2.config(text="الارتفاع (h):")
+      self.e_geo_2.grid(row=1, column=1, padx=5, pady=2)
+
+  def calc_geometry(self):
+    try:
+      s = self.geo_shape.get()
+      r = float(self.e_geo_1.get()) if self.e_geo_1.get() else 0
+      h = float(self.e_geo_2.get()) if self.e_geo_2.get() else 0
+
+      if s == "مساحة الدائرة":
+        res = math.pi * (r**2)
+      elif s == "محيط الدائرة":
+        res = 2 * math.pi * r
+      elif s == "حجم الكرة":
+        res = (4 / 3) * math.pi * (r**3)
+      elif s == "حجم الأسطوانة":
+        res = math.pi * (r**2) * h
+      elif s == "مساحة المثلث":
+        res = 0.5 * r * h
+      self.lbl_geo_res.config(text=f"النتيجة: {res:,.6g}")
+    except Exception:
+      self.lbl_geo_res.config(text="خطأ في الحساب")
+
+  # ==========================================
+  # 3. التبويب الثالث: حاسبة المبرمج (Programmer)
+  # ==========================================
+  def build_prog_tab(self, parent):
+    frame = tk.Frame(parent, bg=self.BG_CARD)
+    frame.pack(fill="both", expand=True, padx=10, pady=10)
+
+    tk.Label(
+        frame,
+        text="💻 تحويل الأنظمة العددية (Base Converter)",
+        font=("Tahoma", 10, "bold"),
+        fg=self.ACCENT_CYAN,
+        bg=self.BG_CARD,
+    ).pack(anchor="w", padx=10, pady=10)
+
+    tk.Label(
+        frame, text="أدخل رقم عشري (Decimal):", fg=self.TEXT_MAIN, bg=self.BG_CARD
+    ).pack(anchor="w", padx=10)
+    self.e_dec = tk.Entry(
+        frame,
+        font=("Consolas", 14, "bold"),
+        bg=self.BG_BTN,
+        fg=self.ACCENT_GREEN,
+    )
+    self.e_dec.pack(fill="x", padx=10, pady=5)
+    self.e_dec.bind("<KeyRelease>", self.convert_bases)
+
+    res_f = tk.Frame(frame, bg=self.BG_CARD)
+    res_f.pack(fill="x", padx=10, pady=15)
+
+    bases = [
+        ("HEX (سداسي عشر):", "hex"),
+        ("DEC (عشري):", "dec"),
+        ("OCT (ثماني):", "oct"),
+        ("BIN (ثنائي):", "bin"),
+    ]
+    self.base_labels = {}
+
+    for idx, (title, key) in enumerate(bases):
+      tk.Label(
+          res_f,
+          text=title,
+          font=("Tahoma", 9, "bold"),
+          fg=self.TEXT_MUTED,
+          bg=self.BG_CARD,
+      ).grid(row=idx, column=0, sticky="w", pady=6)
+      lbl = tk.Label(
+          res_f,
+          text="0",
+          font=("Consolas", 11, "bold"),
+          fg=self.ACCENT_CYAN,
+          bg=self.BG_CARD,
+      )
+      lbl.grid(row=idx, column=1, sticky="w", padx=10)
+      self.base_labels[key] = lbl
+
+  def convert_bases(self, event=None):
+    val_str = self.e_dec.get().strip()
+    if not val_str:
+      for lbl in self.base_labels.values():
+        lbl.config(text="0")
+      return
+    try:
+      val = int(val_str)
+      self.base_labels["hex"].config(text=hex(val)[2:].upper())
+      self.base_labels["dec"].config(text=str(val))
+      self.base_labels["oct"].config(text=oct(val)[2:])
+      self.base_labels["bin"].config(text=bin(val)[2:])
+    except ValueError:
+      for lbl in self.base_labels.values():
+        lbl.config(text="خطأ إدخال")
+
+  # ==========================================
+  # 4. التبويب الرابع: محول الوحدات الشامل
+  # ==========================================
+  def build_conv_tab(self, parent):
+    frame = tk.Frame(parent, bg=self.BG_CARD)
+    frame.pack(fill="both", expand=True, padx=10, pady=10)
+
+    self.conv_categories = {
+        "الطول (Length)": {
+            "ملم (mm)": 0.001,
+            "سم (cm)": 0.01,
+            "متر (m)": 1.0,
+            "كم (km)": 1000.0,
+            "بوصة (inch)": 0.0254,
+            "قدم (ft)": 0.3048,
+        },
+        "الوزن (Mass)": {
+            "جرام (g)": 0.001,
+            "كجم (kg)": 1.0,
+            "طن (Ton)": 1000.0,
+            "باوند (lb)": 0.453592,
+        },
+        "حجم البيانات": {
+            "Byte": 1,
+            "KB": 1024,
+            "MB": 1024**2,
+            "GB": 1024**3,
+            "TB": 1024**4,
+        },
+        "الضغط (Pressure)": {
+            "Pascal (Pa)": 1.0,
+            "Bar": 100000.0,
+            "PSI": 6894.76,
+            "Atmosphere (atm)": 101325.0,
+        },
+        "السرعة (Speed)": {
+            "m/s": 1.0,
+            "km/h": 0.277778,
+            "mph": 0.44704,
+            "Knot": 0.514444,
+        },
+    }
+
+    tk.Label(
+        frame,
+        text="اختر الفئة:",
+        font=("Tahoma", 9, "bold"),
+        fg=self.ACCENT_CYAN,
+        bg=self.BG_CARD,
+    ).pack(anchor="w", padx=10, pady=(10, 2))
+    self.conv_cat_var = tk.StringVar(value=list(self.conv_categories.keys())[0])
+    cb_cat = ttk.Combobox(
+        frame,
+        textvariable=self.conv_cat_var,
+        values=list(self.conv_categories.keys()),
+        state="readonly",
+    )
+    cb_cat.pack(fill="x", padx=10, pady=5)
+    cb_cat.bind("<<ComboboxSelected>>", self.update_conv_units)
+
+    tk.Label(
+        frame,
+        text="القيمة:",
+        font=("Tahoma", 9, "bold"),
+        fg=self.TEXT_MAIN,
+        bg=self.BG_CARD,
+    ).pack(anchor="w", padx=10, pady=(5, 2))
+    self.e_conv_val = tk.Entry(
+        frame,
+        font=("Consolas", 12, "bold"),
+        bg=self.BG_BTN,
+        fg=self.ACCENT_GREEN,
+    )
+    self.e_conv_val.pack(fill="x", padx=10, pady=5)
+    self.e_conv_val.insert(0, "1")
+
+    u_frame = tk.Frame(frame, bg=self.BG_CARD)
+    u_frame.pack(fill="x", padx=10, pady=10)
+
+    self.u_from_var = tk.StringVar()
+    self.u_to_var = tk.StringVar()
+
+    cb_from = ttk.Combobox(
+        u_frame, textvariable=self.u_from_var, state="readonly"
+    )
+    cb_to = ttk.Combobox(u_frame, textvariable=self.u_to_var, state="readonly")
+    cb_from.pack(side="left", fill="x", expand=True, padx=(0, 5))
+    cb_to.pack(side="right", fill="x", expand=True, padx=(5, 0))
+
+    self.cb_from = cb_from
+    self.cb_to = cb_to
+
+    btn_calc_conv = tk.Button(
+        frame,
+        text="⚡ تحويل ⚡",
+        bg=self.ACCENT_GREEN,
+        fg="#000",
+        font=("Tahoma", 10, "bold"),
+        command=self.execute_conversion,
+    )
+    btn_calc_conv.pack(fill="x", padx=10, pady=10)
+
+    self.lbl_conv_res = tk.Label(
+        frame,
+        text="النتيجة: -",
+        font=("Consolas", 14, "bold"),
+        fg=self.ACCENT_CYAN,
+        bg=self.BG_CARD,
+    )
+    self.lbl_conv_res.pack(anchor="w", padx=10, pady=10)
+
+    self.update_conv_units()
+
+  def update_conv_units(self, event=None):
+    cat = self.conv_cat_var.get()
+    units = list(self.conv_categories[cat].keys())
+    self.cb_from["values"] = units
+    self.cb_to["values"] = units
+    self.u_from_var.set(units[0])
+    self.u_to_var.set(units[1] if len(units) > 1 else units[0])
+
+  def execute_conversion(self):
+    try:
+      val = float(self.e_conv_val.get())
+      cat = self.conv_cat_var.get()
+      f_u = self.u_from_var.get()
+      t_u = self.u_to_var.get()
+
+      res = (
+          val * self.conv_categories[cat][f_u]
+      ) / self.conv_categories[cat][t_u]
+      self.lbl_conv_res.config(text=f"النتيجة: {res:,.6g} {t_u}")
+    except Exception:
+      self.lbl_conv_res.config(text="خطأ في الإدخال")
+
+
+if __name__ == "__main__":
+  root = tk.Tk()
+  app = ModernBreeshCalculator(root)
+  root.mainloop()
