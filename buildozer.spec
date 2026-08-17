@@ -2,6 +2,7 @@
 title = BREESH Calc Pro
 package.name = breeshcalc
 package.domain = com.breesh
+source.dir = .
 source.include_exts = py,png,jpg,kv,atlas
 version = 0.1
 requirements = python3,kivy
