@@ -6,167 +6,174 @@
     <title>بنك أسئلة الثقافة الإسلامية | Cyber-Saleh</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=Cairo:wght@500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-body: #f4f6f4;
-            --bg-surface: #ffffff;
-            --emerald-deep: #0b3b2c;
-            --emerald-mid: #14533e;
-            --emerald-soft: #eaf3ef;
-            --gold-rich: #b8891f;
-            --gold-light: #d9b25f;
-            --gold-pale: #fcf8ee;
-            --ink-primary: #1a2421;
-            --ink-secondary: #5a6964;
-            --border-subtle: #e2e8e4;
-            --correct-bg: #e6f6ec;
-            --correct-border: #198754;
-            --correct-text: #0f5132;
+            --bg-canvas: #f2efe9;
+            --bg-card: #ffffff;
+            --emerald-royal: #0c3b2e;
+            --emerald-mid: #165442;
+            --emerald-tint: #eaf3f0;
+            --gold-accent: #b8860b;
+            --gold-soft: #fbf5e6;
+            --gold-border: rgba(184, 134, 11, 0.35);
+            --ink-dark: #18231f;
+            --ink-muted: #5d6c67;
+            --border-light: #e2e6e4;
+            --correct-main: #1b873f;
+            --correct-bg: #e7f6ec;
+            --wrong-main: #d63031;
             --wrong-bg: #fdeaea;
-            --wrong-border: #dc3545;
-            --wrong-text: #842029;
-            --shadow-card: 0 12px 32px -8px rgba(11, 59, 44, 0.08), 0 4px 12px -4px rgba(0, 0, 0, 0.03);
-            --shadow-elevated: 0 20px 40px -12px rgba(11, 59, 44, 0.14);
+            --shadow-soft: 0 6px 20px rgba(12, 59, 46, 0.07);
+            --shadow-card: 0 10px 28px -6px rgba(12, 59, 46, 0.11);
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; -webkit-tap-highlight-color: transparent; }
         body {
-            background-color: var(--bg-body);
-            background-image: radial-gradient(circle at 15% 10%, rgba(184, 137, 31, 0.05) 0%, transparent 40%),
-                              radial-gradient(circle at 85% 90%, rgba(11, 59, 44, 0.05) 0%, transparent 40%);
-            color: var(--ink-primary);
-            line-height: 1.75;
-            padding-bottom: 70px;
+            background-color: var(--bg-canvas);
+            background-image: radial-gradient(circle at 12% 15%, rgba(184, 134, 11, 0.06) 0%, transparent 45%),
+                              radial-gradient(circle at 88% 85%, rgba(12, 59, 46, 0.06) 0%, transparent 45%);
+            color: var(--ink-dark); min-height: 100vh; display: flex; flex-direction: column; align-items: center;
         }
-        .hero-header {
-            background: linear-gradient(135deg, var(--emerald-deep) 0%, var(--emerald-mid) 60%, #1b694f 100%);
-            color: #ffffff;
-            padding: 44px 20px 65px;
-            text-align: center;
-            position: relative;
-            border-bottom: 4px solid var(--gold-rich);
-            box-shadow: 0 10px 30px rgba(11, 59, 44, 0.2);
-            overflow: hidden;
+        .app-topbar {
+            width: 100%; background: linear-gradient(135deg, var(--emerald-royal) 0%, var(--emerald-mid) 100%);
+            color: #ffffff; border-bottom: 3px solid var(--gold-accent); padding: 12px 16px;
+            position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 16px rgba(12, 59, 46, 0.18);
         }
-        .hero-badge {
-            display: inline-flex; align-items: center; gap: 8px;
-            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(6px);
-            border: 1px solid rgba(217, 178, 95, 0.5); color: #f8e4a8;
-            padding: 5px 18px; border-radius: 50px; font-size: 0.85rem; font-weight: 700; margin-bottom: 12px;
+        .app-topbar-inner { max-width: 640px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+        .bot-identity { display: flex; align-items: center; gap: 11px; }
+        .bot-emblem {
+            width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg, #d4a336, #a37408);
+            border: 1.5px solid #f7e3a1; color: #ffffff; display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 1rem; flex-shrink: 0;
         }
-        .hero-header h1 { font-family: 'Amiri', 'Cairo', serif; font-size: 2.4rem; font-weight: 700; margin-bottom: 6px; }
-        .hero-header p { color: #cbe5db; font-size: 1rem; max-width: 620px; margin: 0 auto; }
-        .main-wrapper { max-width: 900px; margin: 0 auto; padding: 0 18px; }
-        .dashboard-bar {
-            margin-top: -34px; margin-bottom: 28px; background: rgba(255, 255, 255, 0.96);
-            backdrop-filter: blur(12px); border-radius: 18px; padding: 16px 26px;
-            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;
-            box-shadow: var(--shadow-elevated); border: 1px solid rgba(184, 137, 31, 0.25);
-            position: sticky; top: 12px; z-index: 100;
+        .bot-titles h1 { font-family: 'Amiri', 'Cairo', serif; font-size: 1.25rem; font-weight: 700; color: #ffffff; line-height: 1.2; }
+        .bot-titles span { font-size: 0.78rem; color: #f6e2a6; font-weight: 700; display: block; }
+        .mode-switch-btn {
+            background: rgba(255, 255, 255, 0.14); border: 1px solid rgba(246, 226, 166, 0.55); color: #fff8e6;
+            padding: 6px 13px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; cursor: pointer; white-space: nowrap;
         }
-        .stats-group { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
-        .stat-box { display: flex; align-items: center; gap: 8px; font-size: 0.95rem; font-weight: 700; color: var(--ink-secondary); }
-        .stat-pill { background: var(--emerald-soft); color: var(--emerald-deep); padding: 4px 14px; border-radius: 10px; font-weight: 800; font-size: 0.95rem; }
-        .stat-pill.gold { background: var(--gold-pale); color: #8f660c; border: 1px solid rgba(184, 137, 31, 0.35); }
-        .btn-reset {
-            background: linear-gradient(135deg, var(--emerald-deep), var(--emerald-mid)); color: #ffffff;
-            border: none; padding: 9px 20px; border-radius: 12px; font-weight: 700; font-size: 0.9rem; cursor: pointer;
+        .main-container { width: 100%; max-width: 640px; padding: 16px 14px 44px; flex: 1; }
+        .welcome-card {
+            background: linear-gradient(135deg, #ffffff 0%, var(--gold-soft) 100%); border: 1px solid var(--gold-border);
+            border-right: 5px solid var(--gold-accent); border-radius: 16px; padding: 14px 16px; margin-bottom: 14px; box-shadow: var(--shadow-soft);
         }
-        .pathway-label { font-size: 0.94rem; font-weight: 800; color: var(--emerald-deep); margin-bottom: 12px; }
-        .chapters-nav { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin-bottom: 22px; }
-        .chapter-tab {
-            background: var(--bg-surface); border: 2px solid var(--border-subtle); border-radius: 16px;
-            padding: 15px 18px; text-align: right; cursor: pointer; transition: all 0.25s ease; position: relative; overflow: hidden;
+        .welcome-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+        .welcome-title { font-size: 0.94rem; font-weight: 800; color: var(--emerald-royal); }
+        .welcome-pill { background: var(--emerald-royal); color: #f7e3a1; font-size: 0.72rem; font-weight: 700; padding: 2px 10px; border-radius: 20px; }
+        .welcome-desc { font-size: 0.85rem; color: var(--ink-muted); line-height: 1.65; font-weight: 600; }
+        .welcome-desc strong { color: var(--emerald-royal); }
+        .chapters-section-label { font-size: 0.82rem; font-weight: 800; color: var(--emerald-royal); margin-bottom: 8px; display: flex; justify-content: space-between; }
+        .chapters-grid-6 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
+        .chapter-grid-btn {
+            background: var(--bg-card); border: 1.5px solid var(--border-light); border-radius: 12px; padding: 8px 6px;
+            text-align: center; cursor: pointer; transition: all 0.2s ease; display: flex; flex-direction: column; align-items: center; gap: 2px;
         }
-        .chapter-tab.active { background: linear-gradient(135deg, #ffffff 0%, var(--gold-pale) 100%); border-color: var(--gold-rich); box-shadow: var(--shadow-card); }
-        .chapter-tab.active::after { content: ""; position: absolute; top: 0; right: 0; bottom: 0; width: 5px; background: var(--gold-rich); }
-        .chapter-tab-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
-        .chapter-tab-label { font-size: 0.82rem; font-weight: 800; color: var(--gold-rich); }
-        .chapter-tab-progress { font-size: 0.76rem; font-weight: 700; background: var(--emerald-soft); color: var(--emerald-deep); padding: 2px 9px; border-radius: 20px; }
-        .chapter-tab-title { font-size: 1.04rem; font-weight: 800; color: var(--emerald-deep); display: block; margin-bottom: 3px; }
-        .chapter-tab-meta { font-size: 0.82rem; color: var(--ink-secondary); font-weight: 600; }
-        .subtopics-bar {
-            display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 24px; background: var(--bg-surface);
-            padding: 12px 16px; border-radius: 14px; border: 1px solid var(--border-subtle);
+        .chapter-grid-btn.active {
+            background: linear-gradient(135deg, var(--emerald-royal), var(--emerald-mid)); border-color: var(--gold-accent);
+            color: #ffffff; box-shadow: 0 4px 12px rgba(12, 59, 46, 0.22);
         }
-        .subtopic-btn {
-            background: var(--bg-body); border: 1.5px solid transparent; color: var(--ink-secondary);
-            padding: 8px 16px; border-radius: 10px; font-size: 0.9rem; font-weight: 700; cursor: pointer;
+        .ch-btn-name { font-size: 0.84rem; font-weight: 800; }
+        .ch-btn-count { font-size: 0.7rem; font-weight: 700; color: var(--gold-accent); }
+        .chapter-grid-btn.active .ch-btn-count { color: #f7e3a1; }
+        .subtopics-wrap { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 14px; }
+        .subtopic-pill {
+            flex: 1; min-width: 130px; background: var(--bg-card); border: 1.5px solid var(--border-light); color: var(--ink-muted);
+            padding: 7px 12px; border-radius: 11px; font-size: 0.82rem; font-weight: 700; cursor: pointer; text-align: center;
         }
-        .subtopic-btn.active { background: var(--emerald-deep); color: #ffffff; border-color: var(--emerald-deep); }
-        .topic-banner {
-            background: linear-gradient(to left, var(--gold-pale), #ffffff); border: 1px solid rgba(184, 137, 31, 0.3);
-            border-right: 6px solid var(--gold-rich); border-radius: 16px; padding: 20px 24px; margin-bottom: 24px;
-            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; box-shadow: var(--shadow-card);
+        .subtopic-pill.active { background: var(--gold-soft); border-color: var(--gold-accent); color: var(--emerald-royal); font-weight: 800; }
+        .current-topic-banner { background: var(--emerald-tint); border: 1px solid rgba(12, 59, 46, 0.14); border-radius: 12px; padding: 9px 14px; margin-bottom: 14px; text-align: center; }
+        .current-topic-banner h2 { font-size: 0.92rem; font-weight: 800; color: var(--emerald-royal); }
+        .current-topic-banner p { font-size: 0.8rem; color: var(--ink-muted); font-weight: 600; }
+        .quiz-bubble {
+            background: var(--bg-card); border-radius: 18px; border-top-right-radius: 4px; padding: 18px 18px 15px;
+            box-shadow: var(--shadow-card); border: 1px solid rgba(184, 134, 11, 0.22); margin-bottom: 16px; animation: fadeSlide 0.22s ease-out;
         }
-        .topic-banner-info h2 { color: var(--emerald-deep); font-size: 1.28rem; font-weight: 800; margin-bottom: 4px; }
-        .topic-banner-info p { color: var(--ink-secondary); font-size: 0.95rem; font-weight: 600; }
-        .topic-count-badge { background: var(--gold-rich); color: #ffffff; padding: 6px 16px; border-radius: 50px; font-size: 0.88rem; font-weight: 700; }
-        .important-note-card {
-            background: linear-gradient(135deg, #fffdf7 0%, #fcf6e6 100%); border: 1.5px solid var(--gold-light);
-            border-right: 6px solid var(--gold-rich); border-radius: 16px; padding: 22px 24px; margin-bottom: 22px; box-shadow: var(--shadow-card);
+        @keyframes fadeSlide { from { opacity: 0; transform: translateY(7px); } to { opacity: 1; transform: translateY(0); } }
+        .quiz-bubble-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .quiz-q-tag { font-size: 0.8rem; font-weight: 700; color: var(--gold-accent); }
+        .quiz-q-counter { font-size: 0.8rem; font-weight: 800; color: var(--emerald-royal); background: var(--emerald-tint); padding: 2px 11px; border-radius: 12px; }
+        .progress-bar-bg { width: 100%; height: 5px; background: #e9eceb; border-radius: 5px; overflow: hidden; margin-bottom: 15px; }
+        .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--emerald-royal), var(--gold-accent)); transition: width 0.3s ease; }
+        .question-body-text { font-size: 1.08rem; font-weight: 800; color: var(--ink-dark); line-height: 1.65; margin-bottom: 16px; }
+        .options-stack { display: flex; flex-direction: column; gap: 9px; }
+        .option-item {
+            width: 100%; background: #fbfcfb; border: 1.5px solid var(--border-light); border-radius: 12px; padding: 12px 14px;
+            display: flex; align-items: center; gap: 12px; text-align: right; cursor: pointer; transition: all 0.18s ease;
         }
-        .important-note-card h3 { color: var(--emerald-deep); font-size: 1.12rem; font-weight: 800; margin-bottom: 10px; }
-        .important-note-card ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
-        .important-note-card li { color: var(--ink-primary); font-size: 0.96rem; font-weight: 600; }
-        .q-card { background: var(--bg-surface); border-radius: 18px; padding: 26px; margin-bottom: 20px; border: 1px solid var(--border-subtle); box-shadow: var(--shadow-card); }
-        .q-header { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 20px; }
-        .q-badge {
-            background: linear-gradient(135deg, var(--emerald-deep), var(--emerald-mid)); color: #ffffff;
-            min-width: 38px; height: 38px; border-radius: 12px; display: flex; align-items: center; justify-content: center;
-            font-weight: 800; font-size: 0.98rem; margin-top: 2px;
+        .option-item:hover:not(:disabled) { background: var(--emerald-tint); border-color: var(--emerald-mid); }
+        .option-item:disabled { cursor: default; }
+        .radio-dot {
+            width: 23px; height: 23px; border-radius: 50%; border: 2px solid #b5c2bd; display: flex; align-items: center;
+            justify-content: center; font-size: 0.8rem; font-weight: 800; color: #ffffff; flex-shrink: 0;
         }
-        .q-title { font-size: 1.14rem; font-weight: 700; color: var(--ink-primary); line-height: 1.65; }
-        .options-grid { display: flex; flex-direction: column; gap: 11px; }
-        .opt-btn {
-            width: 100%; text-align: right; background: #f9fbfa; border: 1.5px solid #e1e8e4; padding: 14px 18px;
-            border-radius: 13px; font-size: 1.01rem; font-weight: 600; color: var(--ink-primary); cursor: pointer;
-            display: flex; align-items: center; justify-content: space-between; gap: 12px;
+        .option-text { font-size: 0.98rem; font-weight: 600; color: var(--ink-dark); flex: 1; line-height: 1.5; }
+        .option-item.correct { background: var(--correct-bg); border-color: var(--correct-main); }
+        .option-item.correct .radio-dot { background: var(--correct-main); border-color: var(--correct-main); }
+        .option-item.correct .option-text { color: #0f5132; font-weight: 700; }
+        .option-item.wrong { background: var(--wrong-bg); border-color: var(--wrong-main); }
+        .option-item.wrong .radio-dot { background: var(--wrong-main); border-color: var(--wrong-main); }
+        .option-item.wrong .option-text { color: #842029; }
+        .quiz-bubble-footer {
+            margin-top: 14px; padding-top: 10px; border-top: 1px solid #f0f2f1; display: flex;
+            justify-content: space-between; align-items: center; font-size: 0.79rem; color: var(--ink-muted); font-weight: 700;
         }
-        .opt-btn:hover:not(:disabled) { background: var(--emerald-soft); border-color: var(--emerald-mid); color: var(--emerald-deep); }
-        .opt-btn:disabled { cursor: default; }
-        .opt-btn.is-correct { background: var(--correct-bg) !important; border-color: var(--correct-border) !important; color: var(--correct-text) !important; font-weight: 700; }
-        .opt-btn.is-wrong { background: var(--wrong-bg) !important; border-color: var(--wrong-border) !important; color: var(--wrong-text) !important; }
-        .opt-icon { font-size: 1.15rem; font-weight: 800; flex-shrink: 0; }
-        .bottom-nav { display: flex; justify-content: space-between; align-items: center; gap: 14px; margin-top: 32px; padding-top: 22px; border-top: 2px dashed var(--border-subtle); flex-wrap: wrap; }
-        .nav-step-btn {
-            background: var(--bg-surface); border: 2px solid var(--emerald-deep); color: var(--emerald-deep);
-            padding: 12px 22px; border-radius: 14px; font-size: 0.96rem; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;
+        .inline-nav-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: -8px; margin-bottom: 18px; }
+        .inline-nav-btn {
+            background: var(--bg-card); color: var(--emerald-royal); border: 1.5px solid var(--emerald-royal); border-radius: 12px;
+            padding: 11px 14px; font-size: 0.9rem; font-weight: 800; cursor: pointer; text-align: center;
         }
-        .nav-step-btn.next-primary { background: linear-gradient(135deg, var(--emerald-deep), var(--emerald-mid)); color: #ffffff; border-color: transparent; margin-right: auto; }
-        footer { text-align: center; margin-top: 50px; padding-top: 20px; border-top: 1px solid var(--border-subtle); color: var(--ink-secondary); font-size: 0.92rem; }
-        footer strong { color: var(--emerald-deep); }
-        @media (max-width: 640px) {
-            .hero-header h1 { font-size: 1.85rem; }
-            .dashboard-bar { padding: 14px 16px; justify-content: center; }
-            .q-card { padding: 20px 16px; }
-            .q-title { font-size: 1.04rem; }
-            .bottom-nav { flex-direction: column; }
-            .nav-step-btn { width: 100%; justify-content: center; }
-        }
+        .inline-nav-btn:disabled { opacity: 0.4; cursor: default; }
+        .inline-nav-btn.primary { background: linear-gradient(135deg, var(--emerald-royal), var(--emerald-mid)); color: #ffffff; border-color: transparent; }
+        .inline-nav-btn.full { grid-column: span 2; }
+        .summary-card { background: var(--bg-card); border: 1.5px solid var(--gold-border); border-radius: 18px; padding: 24px 20px; text-align: center; box-shadow: var(--shadow-card); margin-bottom: 16px; }
+        .summary-icon { font-size: 3rem; margin-bottom: 6px; }
+        .summary-card h2 { font-size: 1.25rem; font-weight: 800; color: var(--emerald-royal); margin-bottom: 4px; }
+        .summary-box { background: var(--gold-soft); border: 1px solid var(--gold-border); border-radius: 12px; padding: 14px; margin: 14px 0; display: flex; flex-direction: column; gap: 8px; font-size: 0.94rem; font-weight: 700; }
+        .summary-row { display: flex; justify-content: space-between; padding: 0 6px; }
+        .note-card { background: var(--gold-soft); border: 1.5px solid var(--gold-border); border-right: 5px solid var(--gold-accent); border-radius: 14px; padding: 14px 16px; margin-bottom: 14px; font-size: 0.9rem; }
+        .note-card h4 { color: var(--emerald-royal); font-weight: 800; margin-bottom: 6px; }
+        .note-card ul { list-style: none; display: flex; flex-direction: column; gap: 4px; color: var(--ink-dark); font-weight: 600; }
+        .footer-signature { text-align: center; font-size: 0.82rem; color: var(--ink-muted); margin-top: 22px; font-weight: 700; }
+        .footer-signature strong { color: var(--emerald-royal); }
     </style>
 </head>
 <body>
-<header class="hero-header">
-    <div class="hero-badge">✦ بنك الأسئلة التفاعلي الكامل (6 فصول) • الترم الأول ✦</div>
-    <h1>مادة الثقافة الإسلامية</h1>
-    <p>مرتبة حسب الفصول والمباحث الدراسية مع نظام التصحيح الفوري وتقييم الأداء</p>
-</header>
-<div class="main-wrapper">
-    <div class="dashboard-bar">
-        <div class="stats-group">
-            <div class="stat-box"><span>المُجاب عنها:</span><span class="stat-pill" id="stat-answered">0 / 164</span></div>
-            <div class="stat-box"><span>الدرجة:</span><span class="stat-pill gold" id="stat-score">0 من 164</span></div>
+<div class="app-topbar">
+    <div class="app-topbar-inner">
+        <div class="bot-identity">
+            <div class="bot-emblem">CS</div>
+            <div class="bot-titles">
+                <h1>بنك أسئلة الثقافة الإسلامية</h1>
+                <span id="header-score-live">النتيجة: 0 من 164 • الترم الأول</span>
+            </div>
         </div>
-        <button class="btn-reset" onclick="resetAll()">إعادة الاختبار ↻</button>
+        <button class="mode-switch-btn" id="mode-btn" onclick="toggleViewMode()">عرض الكل ☰</button>
     </div>
-    <div class="pathway-label">📚 الفصول الدراسية مرتبة (من الفصل الأول إلى الفصل السادس):</div>
-    <div class="chapters-nav" id="chapters-nav"></div>
-    <div class="subtopics-bar" id="subtopics-bar"></div>
-    <div id="quiz-content"></div>
-    <div class="bottom-nav" id="bottom-nav"></div>
 </div>
-<footer>إعداد وتصميم: <strong>Cyber-Saleh</strong> • بوابة الاختبارات الجامعية التفاعلية</footer>
+<div class="main-container">
+    <div class="welcome-card">
+        <div class="welcome-header">
+            <span class="welcome-title">✦ مرحباً بك في الاختبار التفاعلي لمادة الثقافة الإسلامية</span>
+            <span class="welcome-pill">164 سؤالاً</span>
+        </div>
+        <p class="welcome-desc">
+            يغطي هذا الاختبار المنهج الكامل والمكوّن من <strong>6 فصول دراسية</strong> مقسمة إلى مباحث مرتبة، مع تصحيح فوري وانتقال تلقائي لكل سؤال لتقييم مستواك بسهولة.
+        </p>
+    </div>
+    <div class="chapters-section-label">
+        <span>📚 اختر الفصل الدراسي (6 فصول):</span>
+        <span id="total-progress-label" style="color: var(--gold-accent);">المُجاب: 0 / 164</span>
+    </div>
+    <div class="chapters-grid-6" id="chapters-grid"></div>
+    <div class="subtopics-wrap" id="subtopics-wrap"></div>
+    <div class="current-topic-banner">
+        <h2 id="topic-title-text">الفصل الأول — المبحث الأول</h2>
+        <p id="topic-subtitle-text">مصادر الثقافة الإسلامية وأهمية القرآن الكريم</p>
+    </div>
+    <div id="quiz-stream"></div>
+    <div id="inline-controls"></div>
+    <div class="footer-signature">إعداد وتصميم: <strong>Cyber-Saleh</strong> • بوابة الاختبارات الجامعية التفاعلية</div>
+</div>
 <script>
 const courseData = [
 {
@@ -208,7 +215,7 @@ const courseData = [
         }
     ]
 },
-{
+    {
     "id": "ch2", "label": "الفصل الثاني", "title": "القرآن طريقنا لمعرفة الله",
     "subtopics": [
         {
@@ -297,7 +304,7 @@ const courseData = [
         }
     ]
 },
-{
+    {
     "id": "ch5", "label": "الفصل الخامس", "title": "معرفة الله وعده ووعيده",
     "subtopics": [
         {
@@ -340,7 +347,7 @@ const courseData = [
                 { "number": 115, "question": "لقد توعد الله القاعدين والساكتين بعقوبات أقلها.....", "options": ["الخزي في الدنيا", "العذاب في الآخرة", "الخزي في الدنيا والعذاب في الآخرة"], "correctIndex": 2 }
             ]
         },
-          {
+            {
             "id": "ch5-m2", "title": "المبحث الثاني", "subtitle": "أهمية الإيمان باليوم الآخر في معرفة الله",
             "questions": [
                 { "number": 116, "question": "جهنم مكان تنعدم فيه..", "options": ["الرحمة", "الراحة", "كل ماسبق"], "correctIndex": 2 },
@@ -426,216 +433,291 @@ const courseData = [
     ]
 }
 ];
-  let activeChapterIndex = 0;
-let activeSubtopicIndex = 0;
+    let activeChapterIdx = 0;
+let activeSubtopicIdx = 0;
+let currentQIdx = 0;
+let viewAllMode = false;
 let userAnswers = {};
+let showSummary = false;
 
-function getTotalQuestionsCount() {
-    let count = 0;
-    courseData.forEach(ch => ch.subtopics.forEach(sub => count += sub.questions.length));
-    return count;
+function getCurrentSubtopic() {
+    return courseData[activeChapterIdx].subtopics[activeSubtopicIdx];
 }
 
-function getStats() {
-    const total = getTotalQuestionsCount();
-    let answeredCount = 0;
-    let correctCount = 0;
-    courseData.forEach(ch => {
-        ch.subtopics.forEach(sub => {
-            sub.questions.forEach(q => {
-                if (Object.prototype.hasOwnProperty.call(userAnswers, q.number)) {
-                    answeredCount++;
-                    if (userAnswers[q.number] === q.correctIndex) correctCount++;
-                }
-            });
-        });
-    });
-    return { total, answeredCount, correctCount };
-}
-
-function getChapterStats(chIndex) {
+function updateHeaderScore() {
     let total = 0;
     let answered = 0;
-    courseData[chIndex].subtopics.forEach(sub => {
-        sub.questions.forEach(q => {
-            total++;
-            if (Object.prototype.hasOwnProperty.call(userAnswers, q.number)) answered++;
-        });
-    });
-    return { total, answered };
+    let correct = 0;
+    courseData.forEach(ch => ch.subtopics.forEach(sub => sub.questions.forEach(q => {
+        total++;
+        if (Object.prototype.hasOwnProperty.call(userAnswers, q.number)) {
+            answered++;
+            if (userAnswers[q.number] === q.correctIndex) correct++;
+        }
+    })));
+    document.getElementById('header-score-live').textContent = `النتيجة: ${correct} من ${total} • الترم الأول`;
+    document.getElementById('total-progress-label').textContent = `المُجاب: ${answered} / ${total}`;
 }
 
-function updateDashboard() {
-    const stats = getStats();
-    document.getElementById('stat-answered').textContent = `${stats.answeredCount} / ${stats.total}`;
-    document.getElementById('stat-score').textContent = `${stats.correctCount} من ${stats.total}`;
+function toggleViewMode() {
+    viewAllMode = !viewAllMode;
+    showSummary = false;
+    document.getElementById('mode-btn').textContent = viewAllMode ? "سؤال بسؤال 🃏" : "عرض الكل ☰";
+    renderAll();
 }
 
-function selectChapter(chIndex, scrollTop = false) {
-    activeChapterIndex = chIndex;
-    activeSubtopicIndex = 0;
-    renderNavigation();
-    renderQuizArea();
-    renderBottomNav();
-    if (scrollTop) document.getElementById('chapters-nav').scrollIntoView({ behavior: 'smooth' });
+function selectChapter(idx) {
+    activeChapterIdx = idx;
+    activeSubtopicIdx = 0;
+    currentQIdx = 0;
+    showSummary = false;
+    renderAll();
 }
 
-function selectSubtopic(subIndex, scrollTop = false) {
-    activeSubtopicIndex = subIndex;
-    renderNavigation();
-    renderQuizArea();
-    renderBottomNav();
-    if (scrollTop) document.getElementById('subtopics-bar').scrollIntoView({ behavior: 'smooth' });
+function selectSubtopic(idx) {
+    activeSubtopicIdx = idx;
+    currentQIdx = 0;
+    showSummary = false;
+    renderAll();
 }
 
-function renderNavigation() {
-    const chaptersNav = document.getElementById('chapters-nav');
-    chaptersNav.innerHTML = '';
+function renderChaptersAndSubtopics() {
+    const chGrid = document.getElementById('chapters-grid');
+    chGrid.innerHTML = '';
     courseData.forEach((ch, idx) => {
-        const stats = getChapterStats(idx);
+        let chTotal = 0;
+        let chAnswered = 0;
+        ch.subtopics.forEach(sub => sub.questions.forEach(q => {
+            chTotal++;
+            if (Object.prototype.hasOwnProperty.call(userAnswers, q.number)) chAnswered++;
+        }));
+
         const btn = document.createElement('button');
-        btn.className = `chapter-tab ${idx === activeChapterIndex ? 'active' : ''}`;
-        btn.onclick = () => selectChapter(idx, false);
+        btn.className = `chapter-grid-btn ${idx === activeChapterIdx ? 'active' : ''}`;
+        btn.onclick = () => selectChapter(idx);
         btn.innerHTML = `
-            <div class="chapter-tab-header">
-                <span class="chapter-tab-label">${ch.label}</span>
-                <span class="chapter-tab-progress">${stats.answered} / ${stats.total}</span>
-            </div>
-            <span class="chapter-tab-title">${ch.title}</span>
-            <span class="chapter-tab-meta">${ch.subtopics.length} مباحث • ${stats.total} سؤالاً</span>
+            <span class="ch-btn-name">${ch.label}</span>
+            <span class="ch-btn-count">${chAnswered} / ${chTotal} سؤال</span>
         `;
-        chaptersNav.appendChild(btn);
+        chGrid.appendChild(btn);
     });
 
-    const currentChapter = courseData[activeChapterIndex];
-    const subtopicsBar = document.getElementById('subtopics-bar');
-    subtopicsBar.innerHTML = '';
-    currentChapter.subtopics.forEach((sub, idx) => {
-        const subBtn = document.createElement('button');
-        subBtn.className = `subtopic-btn ${idx === activeSubtopicIndex ? 'active' : ''}`;
-        subBtn.onclick = () => selectSubtopic(idx, false);
-        subBtn.textContent = `${sub.title} (${sub.questions.length})`;
-        subtopicsBar.appendChild(subBtn);
+    const subWrap = document.getElementById('subtopics-wrap');
+    subWrap.innerHTML = '';
+    const currentCh = courseData[activeChapterIdx];
+    currentCh.subtopics.forEach((sub, idx) => {
+        const btn = document.createElement('button');
+        btn.className = `subtopic-pill ${idx === activeSubtopicIdx ? 'active' : ''}`;
+        btn.textContent = `${sub.title} (${sub.questions.length} سؤالاً)`;
+        btn.onclick = () => selectSubtopic(idx);
+        subWrap.appendChild(btn);
     });
 
-    if (currentChapter.subtopics.length > 1) {
-        const allBtn = document.createElement('button');
-        allBtn.className = `subtopic-btn ${activeSubtopicIndex === -1 ? 'active' : ''}`;
-        allBtn.onclick = () => selectSubtopic(-1, false);
-        allBtn.textContent = `عرض كامل ${currentChapter.label}`;
-        subtopicsBar.appendChild(allBtn);
-    }
+    const sub = getCurrentSubtopic();
+    document.getElementById('topic-title-text').textContent = `${currentCh.label}: ${currentCh.title} — ${sub.title}`;
+    document.getElementById('topic-subtitle-text').textContent = sub.subtitle;
 }
 
-function renderQuizArea() {
-    const container = document.getElementById('quiz-content');
-    container.innerHTML = '';
-    const currentChapter = courseData[activeChapterIndex];
-    const subtopicsToRender = activeSubtopicIndex === -1 ? currentChapter.subtopics : [currentChapter.subtopics[activeSubtopicIndex]];
+function buildPollCardHTML(q, indexInSub, totalInSub) {
+    const isAnswered = Object.prototype.hasOwnProperty.call(userAnswers, q.number);
+    const selectedIdx = userAnswers[q.number];
+    const badgeNum = q.displayNum ? q.displayNum : q.number;
+    const progressPercent = Math.round(((indexInSub + 1) / totalInSub) * 100);
 
-    subtopicsToRender.forEach(sub => {
-        const banner = document.createElement('div');
-        banner.className = 'topic-banner';
-        banner.innerHTML = `
-            <div class="topic-banner-info">
-                <h2>${currentChapter.label} — ${sub.title}</h2>
-                <p>${sub.subtitle}</p>
-            </div>
-            <span class="topic-count-badge">${sub.questions.length} سؤالاً</span>
+    let optionsHTML = '';
+    q.options.forEach((optText, optIdx) => {
+        let stateClass = '';
+        let circleSymbol = '';
+        let disabledAttr = isAnswered ? 'disabled' : '';
+
+        if (isAnswered) {
+            if (optIdx === q.correctIndex) {
+                stateClass = 'correct';
+                circleSymbol = '✓';
+            } else if (optIdx === selectedIdx) {
+                stateClass = 'wrong';
+                circleSymbol = '✕';
+            }
+        }
+
+        optionsHTML += `
+            <button class="option-item ${stateClass}" ${disabledAttr} onclick="answerQuestion(${q.number}, ${optIdx})">
+                <span class="radio-dot">${circleSymbol}</span>
+                <span class="option-text">${optText}</span>
+            </button>
         `;
-        container.appendChild(banner);
+    });
 
-        sub.questions.forEach(q => {
-            const card = document.createElement('div');
-            card.className = 'q-card';
-            const isAnswered = Object.prototype.hasOwnProperty.call(userAnswers, q.number);
-            const selectedIdx = userAnswers[q.number];
-            const badgeNum = q.displayNum ? q.displayNum : q.number;
+    const statusFooter = isAnswered
+        ? (selectedIdx === q.correctIndex ? '✅ أحسنت! إجابة صحيحة' : '❌ إجابة غير صحيحة')
+        : 'اختر الإجابة الصحيحة للمتابعة';
 
-            let optionsHTML = '';
-            q.options.forEach((optText, optIdx) => {
-                let extraClass = '';
-                let icon = '';
-                let disabledAttr = isAnswered ? 'disabled' : '';
-                if (isAnswered) {
-                    if (optIdx === q.correctIndex) { extraClass = 'is-correct'; icon = '✓'; }
-                    else if (optIdx === selectedIdx) { extraClass = 'is-wrong'; icon = '✕'; }
-                }
-                optionsHTML += `<button class="opt-btn ${extraClass}" ${disabledAttr} onclick="handleAnswer(${q.number}, ${optIdx})"><span>${optText}</span><span class="opt-icon">${icon}</span></button>`;
-            });
+    return `
+        <div class="quiz-bubble">
+            <div class="quiz-bubble-top">
+                <span class="quiz-q-tag">✦ سؤال رقم ${badgeNum}</span>
+                <span class="quiz-q-counter">${indexInSub + 1} من ${totalInSub}</span>
+            </div>
+            <div class="progress-bar-bg">
+                <div class="progress-bar-fill" style="width: ${progressPercent}%"></div>
+            </div>
+            <div class="question-body-text">${q.question}</div>
+            <div class="options-stack">
+                ${optionsHTML}
+            </div>
+            <div class="quiz-bubble-footer">
+                <span>${statusFooter}</span>
+                <span>Cyber-Saleh Quiz</span>
+            </div>
+        </div>
+    `;
+}
 
-            card.innerHTML = `<div class="q-header"><div class="q-badge">${badgeNum}</div><div class="q-title">${q.question}</div></div><div class="options-grid">${optionsHTML}</div>`;
-            container.appendChild(card);
+function renderQuizStream() {
+    const stream = document.getElementById('quiz-stream');
+    const controls = document.getElementById('inline-controls');
+    stream.innerHTML = '';
+    controls.innerHTML = '';
 
+    const currentCh = courseData[activeChapterIdx];
+    const sub = getCurrentSubtopic();
+    const questions = sub.questions;
+
+    if (showSummary && !viewAllMode) {
+        let subCorrect = 0;
+        questions.forEach(q => {
+            if (userAnswers[q.number] === q.correctIndex) subCorrect++;
+        });
+        const pct = Math.round((subCorrect / questions.length) * 100);
+
+        stream.innerHTML = `
+            <div class="summary-card">
+                <div class="summary-icon">${pct >= 80 ? '🏆' : (pct >= 50 ? '🌟' : '📖')}</div>
+                <h2>أتممت ${sub.title} — ${currentCh.label}</h2>
+                <p style="color: var(--ink-muted); font-size: 0.88rem;">ملخص أدائك في هذا المبحث</p>
+                <div class="summary-box">
+                    <div class="summary-row"><span>✅ الإجابات الصحيحة:</span><span style="color: var(--correct-main);">${subCorrect} من ${questions.length}</span></div>
+                    <div class="summary-row"><span>❌ الإجابات الخاطئة:</span><span style="color: var(--wrong-main);">${questions.length - subCorrect}</span></div>
+                    <div class="summary-row"><span>🎯 نسبة الإتقان:</span><span style="color: var(--emerald-royal);">${pct}%</span></div>
+                </div>
+            </div>
+        `;
+
+        let nextActionHTML = '';
+        if (activeSubtopicIdx < currentCh.subtopics.length - 1) {
+            const nextSub = currentCh.subtopics[activeSubtopicIdx + 1];
+            nextActionHTML = `<button class="inline-nav-btn primary full" onclick="selectSubtopic(${activeSubtopicIdx + 1})">الانتقال إلى ${nextSub.title} ⬅️</button>`;
+        } else if (activeChapterIdx < courseData.length - 1) {
+            const nextCh = courseData[activeChapterIdx + 1];
+            nextActionHTML = `<button class="inline-nav-btn primary full" onclick="selectChapter(${activeChapterIdx + 1})">الانتقال إلى ${nextCh.label}: ${nextCh.title} ⬅️</button>`;
+        }
+
+        controls.innerHTML = `
+            <div class="inline-nav-grid">
+                ${nextActionHTML}
+                <button class="inline-nav-btn full" onclick="retryCurrentSubtopic()">إعادة حل هذا المبحث ↻</button>
+            </div>
+        `;
+        return;
+    }
+
+    if (viewAllMode) {
+        let allHTML = '';
+        questions.forEach((q, idx) => {
+            allHTML += buildPollCardHTML(q, idx, questions.length);
             if (q.number === 154 && sub.note) {
-                const noteCard = document.createElement('div');
-                noteCard.className = 'important-note-card';
-                const itemsHTML = sub.note.items.map(it => `<li>${it}</li>`).join('');
-                noteCard.innerHTML = `<h3>${sub.note.title}</h3><ul>${itemsHTML}</ul>`;
-                container.appendChild(noteCard);
+                const items = sub.note.items.map(i => `<li>${i}</li>`).join('');
+                allHTML += `<div class="note-card"><h4>${sub.note.title}</h4><ul>${items}</ul></div>`;
             }
         });
-    });
-}
+        stream.innerHTML = allHTML;
 
-function renderBottomNav() {
-    const bottomNav = document.getElementById('bottom-nav');
-    bottomNav.innerHTML = '';
-    const currentChapter = courseData[activeChapterIndex];
+        let navButtons = '';
+        if (activeSubtopicIdx < currentCh.subtopics.length - 1) {
+            const nextSub = currentCh.subtopics[activeSubtopicIdx + 1];
+            navButtons = `<button class="inline-nav-btn primary full" onclick="selectSubtopic(${activeSubtopicIdx + 1})">المبحث التالي: ${nextSub.title} ⬅️</button>`;
+        } else if (activeChapterIdx < courseData.length - 1) {
+            const nextCh = courseData[activeChapterIdx + 1];
+            navButtons = `<button class="inline-nav-btn primary full" onclick="selectChapter(${activeChapterIdx + 1})">الفصل التالي: ${nextCh.label} ⬅️</button>`;
+        }
+        controls.innerHTML = `<div class="inline-nav-grid">${navButtons}<button class="inline-nav-btn full" onclick="retryCurrentSubtopic()">إعادة ضبط إجابات المبحث ↻</button></div>`;
+    } else {
+        const q = questions[currentQIdx];
+        let cardHTML = buildPollCardHTML(q, currentQIdx, questions.length);
+        if (q.number === 154 && sub.note) {
+            const items = sub.note.items.map(i => `<li>${i}</li>`).join('');
+            cardHTML += `<div class="note-card"><h4>${sub.note.title}</h4><ul>${items}</ul></div>`;
+        }
+        stream.innerHTML = cardHTML;
 
-    if (activeSubtopicIndex > 0) {
-        const prevSub = currentChapter.subtopics[activeSubtopicIndex - 1];
-        const prevBtn = document.createElement('button');
-        prevBtn.className = 'nav-step-btn';
-        prevBtn.innerHTML = `→ السابق: ${prevSub.title}`;
-        prevBtn.onclick = () => selectSubtopic(activeSubtopicIndex - 1, true);
-        bottomNav.appendChild(prevBtn);
-    } else if (activeChapterIndex > 0) {
-        const prevCh = courseData[activeChapterIndex - 1];
-        const prevBtn = document.createElement('button');
-        prevBtn.className = 'nav-step-btn';
-        prevBtn.innerHTML = `→ السابق: ${prevCh.label}`;
-        prevBtn.onclick = () => selectChapter(activeChapterIndex - 1, true);
-        bottomNav.appendChild(prevBtn);
-    }
+        const isLast = currentQIdx === questions.length - 1;
+        const nextLabel = isLast ? "عرض النتيجة 📊" : "السؤال التالي ⬅️";
 
-    if (activeSubtopicIndex !== -1 && activeSubtopicIndex < currentChapter.subtopics.length - 1) {
-        const nextSub = currentChapter.subtopics[activeSubtopicIndex + 1];
-        const nextBtn = document.createElement('button');
-        nextBtn.className = 'nav-step-btn next-primary';
-        nextBtn.innerHTML = `الانتقال إلى ${nextSub.title} (${currentChapter.label}) ←`;
-        nextBtn.onclick = () => selectSubtopic(activeSubtopicIndex + 1, true);
-        bottomNav.appendChild(nextBtn);
-    } else if (activeChapterIndex < courseData.length - 1) {
-        const nextCh = courseData[activeChapterIndex + 1];
-        const nextBtn = document.createElement('button');
-        nextBtn.className = 'nav-step-btn next-primary';
-        nextBtn.innerHTML = `الانتقال مباشرة إلى ${nextCh.label}: ${nextCh.title} ←`;
-        nextBtn.onclick = () => selectChapter(activeChapterIndex + 1, true);
-        bottomNav.appendChild(nextBtn);
+        controls.innerHTML = `
+            <div class="inline-nav-grid">
+                <button class="inline-nav-btn" ${currentQIdx === 0 ? 'disabled' : ''} onclick="prevQuestion()">➡️ السابق</button>
+                <button class="inline-nav-btn primary" onclick="nextQuestion()">${nextLabel}</button>
+            </div>
+        `;
     }
 }
 
-function handleAnswer(questionNumber, selectedOptionIndex) {
-    userAnswers[questionNumber] = selectedOptionIndex;
-    updateDashboard();
-    renderNavigation();
-    renderQuizArea();
+function answerQuestion(qNum, optIdx) {
+    userAnswers[qNum] = optIdx;
+    updateHeaderScore();
+    renderChaptersAndSubtopics();
+    renderQuizStream();
+
+    if (!viewAllMode) {
+        const sub = getCurrentSubtopic();
+        setTimeout(() => {
+            if (currentQIdx < sub.questions.length - 1) {
+                currentQIdx++;
+                renderQuizStream();
+            } else {
+                showSummary = true;
+                renderQuizStream();
+            }
+        }, 950);
+    }
 }
 
-function resetAll() {
-    userAnswers = {};
-    updateDashboard();
-    renderNavigation();
-    renderQuizArea();
-    renderBottomNav();
+function nextQuestion() {
+    const sub = getCurrentSubtopic();
+    if (currentQIdx < sub.questions.length - 1) {
+        currentQIdx++;
+        renderQuizStream();
+    } else {
+        showSummary = true;
+        renderQuizStream();
+    }
+}
+
+function prevQuestion() {
+    if (currentQIdx > 0) {
+        currentQIdx--;
+        renderQuizStream();
+    }
+}
+
+function retryCurrentSubtopic() {
+    const sub = getCurrentSubtopic();
+    sub.questions.forEach(q => delete userAnswers[q.number]);
+    currentQIdx = 0;
+    showSummary = false;
+    updateHeaderScore();
+    renderChaptersAndSubtopics();
+    renderQuizStream();
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-updateDashboard();
-renderNavigation();
-renderQuizArea();
-renderBottomNav();
+function renderAll() {
+    updateHeaderScore();
+    renderChaptersAndSubtopics();
+    renderQuizStream();
+}
+
+renderAll();
 </script>
 </body>
 </html>
