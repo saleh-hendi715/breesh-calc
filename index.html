@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بنك أسئلة الثقافة الإسلامية | Cyber-Saleh</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-body: #f4f6f4;
+            --bg-surface: #ffffff;
+            --emerald-deep: #0b3b2c;
+            --emerald-mid: #14533e;
+            --emerald-soft: #eaf3ef;
+            --gold-rich: #b8891f;
+            --gold-light: #d9b25f;
+            --gold-pale: #fcf8ee;
+            --ink-primary: #1a2421;
+            --ink-secondary: #5a6964;
+            --border-subtle: #e2e8e4;
+            --correct-bg: #e6f6ec;
+            --correct-border: #198754;
+            --correct-text: #0f5132;
+            --wrong-bg: #fdeaea;
+            --wrong-border: #dc3545;
+            --wrong-text: #842029;
+            --shadow-card: 0 12px 32px -8px rgba(11, 59, 44, 0.08), 0 4px 12px -4px rgba(0, 0, 0, 0.03);
+            --shadow-elevated: 0 20px 40px -12px rgba(11, 59, 44, 0.14);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
+        body {
+            background-color: var(--bg-body);
+            background-image: radial-gradient(circle at 15% 10%, rgba(184, 137, 31, 0.05) 0%, transparent 40%),
+                              radial-gradient(circle at 85% 90%, rgba(11, 59, 44, 0.05) 0%, transparent 40%);
+            color: var(--ink-primary);
+            line-height: 1.75;
+            padding-bottom: 70px;
+        }
+        .hero-header {
+            background: linear-gradient(135deg, var(--emerald-deep) 0%, var(--emerald-mid) 60%, #1b694f 100%);
+            color: #ffffff;
+            padding: 44px 20px 65px;
+            text-align: center;
+            position: relative;
+            border-bottom: 4px solid var(--gold-rich);
+            box-shadow: 0 10px 30px rgba(11, 59, 44, 0.2);
+            overflow: hidden;
+        }
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(6px);
+            border: 1px solid rgba(217, 178, 95, 0.5); color: #f8e4a8;
+            padding: 5px 18px; border-radius: 50px; font-size: 0.85rem; font-weight: 700; margin-bottom: 12px;
+        }
+        .hero-header h1 { font-family: 'Amiri', 'Cairo', serif; font-size: 2.4rem; font-weight: 700; margin-bottom: 6px; }
+        .hero-header p { color: #cbe5db; font-size: 1rem; max-width: 620px; margin: 0 auto; }
+        .main-wrapper { max-width: 900px; margin: 0 auto; padding: 0 18px; }
+        .dashboard-bar {
+            margin-top: -34px; margin-bottom: 28px; background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(12px); border-radius: 18px; padding: 16px 26px;
+            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;
+            box-shadow: var(--shadow-elevated); border: 1px solid rgba(184, 137, 31, 0.25);
+            position: sticky; top: 12px; z-index: 100;
+        }
+        .stats-group { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+        .stat-box { display: flex; align-items: center; gap: 8px; font-size: 0.95rem; font-weight: 700; color: var(--ink-secondary); }
+        .stat-pill { background: var(--emerald-soft); color: var(--emerald-deep); padding: 4px 14px; border-radius: 10px; font-weight: 800; font-size: 0.95rem; }
+        .stat-pill.gold { background: var(--gold-pale); color: #8f660c; border: 1px solid rgba(184, 137, 31, 0.35); }
+        .btn-reset {
+            background: linear-gradient(135deg, var(--emerald-deep), var(--emerald-mid)); color: #ffffff;
+            border: none; padding: 9px 20px; border-radius: 12px; font-weight: 700; font-size: 0.9rem; cursor: pointer;
+        }
+        .pathway-label { font-size: 0.94rem; font-weight: 800; color: var(--emerald-deep); margin-bottom: 12px; }
+        .chapters-nav { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin-bottom: 22px; }
+        .chapter-tab {
+            background: var(--bg-surface); border: 2px solid var(--border-subtle); border-radius: 16px;
+            padding: 15px 18px; text-align: right; cursor: pointer; transition: all 0.25s ease; position: relative; overflow: hidden;
+        }
+        .chapter-tab.active { background: linear-gradient(135deg, #ffffff 0%, var(--gold-pale) 100%); border-color: var(--gold-rich); box-shadow: var(--shadow-card); }
+        .chapter-tab.active::after { content: ""; position: absolute; top: 0; right: 0; bottom: 0; width: 5px; background: var(--gold-rich); }
+        .chapter-tab-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+        .chapter-tab-label { font-size: 0.82rem; font-weight: 800; color: var(--gold-rich); }
+        .chapter-tab-progress { font-size: 0.76rem; font-weight: 700; background: var(--emerald-soft); color: var(--emerald-deep); padding: 2px 9px; border-radius: 20px; }
+        .chapter-tab-title { font-size: 1.04rem; font-weight: 800; color: var(--emerald-deep); display: block; margin-bottom: 3px; }
+        .chapter-tab-meta { font-size: 0.82rem; color: var(--ink-secondary); font-weight: 600; }
+        .subtopics-bar {
+            display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 24px; background: var(--bg-surface);
+            padding: 12px 16px; border-radius: 14px; border: 1px solid var(--border-subtle);
+        }
+        .subtopic-btn {
+            background: var(--bg-body); border: 1.5px solid transparent; color: var(--ink-secondary);
+            padding: 8px 16px; border-radius: 10px; font-size: 0.9rem; font-weight: 700; cursor: pointer;
+        }
+        .subtopic-btn.active { background: var(--emerald-deep); color: #ffffff; border-color: var(--emerald-deep); }
+        .topic-banner {
+            background: linear-gradient(to left, var(--gold-pale), #ffffff); border: 1px solid rgba(184, 137, 31, 0.3);
+            border-right: 6px solid var(--gold-rich); border-radius: 16px; padding: 20px 24px; margin-bottom: 24px;
+            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; box-shadow: var(--shadow-card);
+        }
+        .topic-banner-info h2 { color: var(--emerald-deep); font-size: 1.28rem; font-weight: 800; margin-bottom: 4px; }
+        .topic-banner-info p { color: var(--ink-secondary); font-size: 0.95rem; font-weight: 600; }
+        .topic-count-badge { background: var(--gold-rich); color: #ffffff; padding: 6px 16px; border-radius: 50px; font-size: 0.88rem; font-weight: 700; }
+        .important-note-card {
+            background: linear-gradient(135deg, #fffdf7 0%, #fcf6e6 100%); border: 1.5px solid var(--gold-light);
+            border-right: 6px solid var(--gold-rich); border-radius: 16px; padding: 22px 24px; margin-bottom: 22px; box-shadow: var(--shadow-card);
+        }
+        .important-note-card h3 { color: var(--emerald-deep); font-size: 1.12rem; font-weight: 800; margin-bottom: 10px; }
+        .important-note-card ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+        .important-note-card li { color: var(--ink-primary); font-size: 0.96rem; font-weight: 600; }
+        .q-card { background: var(--bg-surface); border-radius: 18px; padding: 26px; margin-bottom: 20px; border: 1px solid var(--border-subtle); box-shadow: var(--shadow-card); }
+        .q-header { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 20px; }
+        .q-badge {
+            background: linear-gradient(135deg, var(--emerald-deep), var(--emerald-mid)); color: #ffffff;
+            min-width: 38px; height: 38px; border-radius: 12px; display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 0.98rem; margin-top: 2px;
+        }
+        .q-title { font-size: 1.14rem; font-weight: 700; color: var(--ink-primary); line-height: 1.65; }
+        .options-grid { display: flex; flex-direction: column; gap: 11px; }
+        .opt-btn {
+            width: 100%; text-align: right; background: #f9fbfa; border: 1.5px solid #e1e8e4; padding: 14px 18px;
+            border-radius: 13px; font-size: 1.01rem; font-weight: 600; color: var(--ink-primary); cursor: pointer;
+            display: flex; align-items: center; justify-content: space-between; gap: 12px;
+        }
+        .opt-btn:hover:not(:disabled) { background: var(--emerald-soft); border-color: var(--emerald-mid); color: var(--emerald-deep); }
+        .opt-btn:disabled { cursor: default; }
+        .opt-btn.is-correct { background: var(--correct-bg) !important; border-color: var(--correct-border) !important; color: var(--correct-text) !important; font-weight: 700; }
+        .opt-btn.is-wrong { background: var(--wrong-bg) !important; border-color: var(--wrong-border) !important; color: var(--wrong-text) !important; }
+        .opt-icon { font-size: 1.15rem; font-weight: 800; flex-shrink: 0; }
+        .bottom-nav { display: flex; justify-content: space-between; align-items: center; gap: 14px; margin-top: 32px; padding-top: 22px; border-top: 2px dashed var(--border-subtle); flex-wrap: wrap; }
+        .nav-step-btn {
+            background: var(--bg-surface); border: 2px solid var(--emerald-deep); color: var(--emerald-deep);
+            padding: 12px 22px; border-radius: 14px; font-size: 0.96rem; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;
+        }
+        .nav-step-btn.next-primary { background: linear-gradient(135deg, var(--emerald-deep), var(--emerald-mid)); color: #ffffff; border-color: transparent; margin-right: auto; }
+        footer { text-align: center; margin-top: 50px; padding-top: 20px; border-top: 1px solid var(--border-subtle); color: var(--ink-secondary); font-size: 0.92rem; }
+        footer strong { color: var(--emerald-deep); }
+        @media (max-width: 640px) {
+            .hero-header h1 { font-size: 1.85rem; }
+            .dashboard-bar { padding: 14px 16px; justify-content: center; }
+            .q-card { padding: 20px 16px; }
+            .q-title { font-size: 1.04rem; }
+            .bottom-nav { flex-direction: column; }
+            .nav-step-btn { width: 100%; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+<header class="hero-header">
+    <div class="hero-badge">✦ بنك الأسئلة التفاعلي الكامل (6 فصول) • الترم الأول ✦</div>
+    <h1>مادة الثقافة الإسلامية</h1>
+    <p>مرتبة حسب الفصول والمباحث الدراسية مع نظام التصحيح الفوري وتقييم الأداء</p>
+</header>
+<div class="main-wrapper">
+    <div class="dashboard-bar">
+        <div class="stats-group">
+            <div class="stat-box"><span>المُجاب عنها:</span><span class="stat-pill" id="stat-answered">0 / 164</span></div>
+            <div class="stat-box"><span>الدرجة:</span><span class="stat-pill gold" id="stat-score">0 من 164</span></div>
+        </div>
+        <button class="btn-reset" onclick="resetAll()">إعادة الاختبار ↻</button>
+    </div>
+    <div class="pathway-label">📚 الفصول الدراسية مرتبة (من الفصل الأول إلى الفصل السادس):</div>
+    <div class="chapters-nav" id="chapters-nav"></div>
+    <div class="subtopics-bar" id="subtopics-bar"></div>
+    <div id="quiz-content"></div>
+    <div class="bottom-nav" id="bottom-nav"></div>
+</div>
+<footer>إعداد وتصميم: <strong>Cyber-Saleh</strong> • بوابة الاختبارات الجامعية التفاعلية</footer>
+<script>
+const courseData = [
+{
+    "id": "ch1", "label": "الفصل الأول", "title": "مدخل إلى الثقافة القرآنية",
+    "subtopics": [
+        {
+            "id": "ch1-m1", "title": "المبحث الأول", "subtitle": "مصادر الثقافة الإسلامية وأهمية القرآن الكريم",
+            "questions": [
+                { "number": 2, "question": "تتشكل ثقافتنا من خلال", "options": ["القرآن الكريم", "واقع الحياة", "هدى رسول الله", "كل ما سبق"], "correctIndex": 0 },
+                { "number": 3, "question": "يعد القرآن الكريم المصدر الأول لثقافتنا لأنه", "options": ["منبع الهداية", "كتاب الله", "يحدد موقف ورؤى المسلم بتوجيهاته", "طريق لمعرفة الله", "كل ماسبق"], "correctIndex": 4 },
+                { "number": 4, "question": "الأميين لفظ يطلق على", "options": ["العرب", "على من سوى أهل الكتاب من الأمم", "كل ما سبق صحيح", "كل ما سبق خاطئ"], "correctIndex": 2 },
+                { "number": 5, "question": "من خصائص القرآن الكريم", "options": ["كتاب هداية ونور", "يمنحنا الثقة والطمأنينة", "كتاب عملي وله قوة تأثير فريدة", "كل ماسبق"], "correctIndex": 3 },
+                { "number": 6, "question": "الوظيفة الأساسية للقرآن", "options": ["إرشاد الناس للعيش بسعادة", "الهداية", "عرض صفات اليهود ومصيرهم"], "correctIndex": 1 },
+                { "number": 7, "question": "تأتي كلمة \"اتقوا\" في مواضع كثيرة في القرآن", "options": ["للتحذير من الكفر بالله", "للتحذير عن التفريط بما ألزمنا الله به", "للتحذير من عاقبة التخاذل"], "correctIndex": 1 },
+                { "number": 8, "question": "مستقر رحمة الله تكون في", "options": ["الدنيا", "الآخرة"], "correctIndex": 1 },
+                { "number": 9, "question": "المتمسكون بالقرآن يحصنهم من أي باطل لأنه", "options": ["يحذرهم ويخوفهم من عاقبة اتباع الباطل", "يعطيهم ثقافة استباقية تكشف أعداءهم", "يوضح لهم الباطل ويكشفه لهم", "كل ما سبق", "الاختيار الثاني والثالث"], "correctIndex": 4 },
+                { "number": 10, "question": "لا نتأثر بالقرآن الكريم كما هو حال أولياء الله.. لماذا؟", "options": ["لأننا نقرأه قراءة عابرة", "الذنوب والمعاصي", "قسوة القلوب", "كل ماسبق"], "correctIndex": 3 },
+                { "number": 11, "question": "هو أن تسمع كلام وتوجيهات الله ولا تلقي له بالاً", "options": ["الكبر", "الضلال", "قسوة القلوب", "الشرك"], "correctIndex": 2 },
+                { "number": 12, "question": "ماذا سيحصل لو تثقفت الأمة بثقافة القرآن الكريم", "options": ["ستصبح أعظم أمة ثقافة وعلماً", "رؤية العالم والأحداث رؤية صحيحة", "تكون النفوس زاكية", "كل ماسبق"], "correctIndex": 3 },
+                { "number": 13, "question": "الأمة في وضع مخزي وسيء لأنها فرطت في مسؤوليتها.", "options": ["صح ✓", "خطأ ✕"], "correctIndex": 0 },
+                { "number": 14, "question": "إتاحة الفرصة لليهود أن يتحركوا بمختلف الفئات الضالة وفقدنا للحكمة من نتائج..", "options": ["عدم اتباع هدي الرسول صلوات الله عليه وآله وسلم", "تفريطنا في مسؤوليتنا الكبيرة", "اتخاذ اليهود أولياء", "كل ماسبق"], "correctIndex": 1 },
+                { "number": 15, "question": "تفوق أعدائنا علينا نتيجة حتمية لعدم", "options": ["اتباعنا للقرآن الكريم", "فهمنا للقرآن الكريم", "كل ماسبق"], "correctIndex": 2 },
+                { "number": 16, "question": "تتركز حرب اليهود على", "options": ["القرآن الكريم", "شخصية رسول الله", "اللغة العربية", "كل ماسبق"], "correctIndex": 3 },
+                { "number": 17, "question": "وضع اليهود طوائف عديدة مثل الوهابية والبهائية بهدف", "options": ["تمزيق نسيج الأمة", "نشر دينهم", "استقطاب الناس"], "correctIndex": 0 },
+                { "number": 18, "question": "يحارب اليهود اللغة العربية لأنها أساس في فهمنا للقرآن ومقاصده", "options": ["صح ✓", "خطأ ✕"], "correctIndex": 0 },
+                { "number": 19, "question": "لا يمكن أبداً أن يتحقق للأمة في واقعها الاتباع للقرآن الكريم والتمسك به إلا على أساس الاستقلال", "options": ["صح ✓", "خطأ ✕"], "correctIndex": 0 },
+                { "number": 20, "question": "نحن أمة يجب أن نعي حقيقة انتماءنا لأنه", "options": ["يبني لنا استقلالاً ثقافياً وفكرياً وسياسياً", "يبني لنا مشروعاً مستقلاً يفصلنا عن التبعية لأي قوى أخرى", "كل ماسبق"], "correctIndex": 2 }
+            ]
+        },
+        {
+            "id": "ch1-m2", "title": "المبحث الثاني", "subtitle": "القرآن الكريم هو المخرج أمام الفتن",
+            "questions": [
+                { "number": 21, "question": "معنى \"هو الفصل\" أي أنه فصل في مقام الهداية يرشد للتي هي أقوم", "options": ["صح ✓", "خطأ ✕"], "correctIndex": 0 },
+                { "number": 22, "question": "معنى \"ليس بالهزل\" أي أن القرآن", "options": ["كتاب عملي", "كتاب نتعبد به ونتلوه", "كل ماسبق"], "correctIndex": 0 },
+                { "number": 23, "question": "معنى \"لا تلتبس به الألسن\"", "options": ["لا يؤثر على القرآن كثرة تلاوته", "لا يمكن أن يمسه أحداً بسوء", "يرفض كل ما يلصق به مما لا ينسجم معه", "كل ماسبق"], "correctIndex": 2 },
+                { "number": 24, "question": "\"مهما ترددت الحياة وتغيرت.. عندما ترجع إلى القرآن يعطيك هدى كيف تتعامل مع الأحداث\".. هذا معنى", "options": ["\"لا يشبع منه العلماء\"", "\"لا يخلق على كثرة الرد\"", "\"لا تنقضي عجائبه\""], "correctIndex": 2 },
+                { "number": 25, "question": "الاختلالات في واقع الأمة كثيرة", "options": ["لأن الكثير لا يمتلك الحد الأدنى من الوعي والبصيرة", "لأننا لا نتأثر بالقرآن", "لأننا اتخذنا اليهود أولياء"], "correctIndex": 0 }
+            ]
+        }
+    ]
+},
+{
+    "id": "ch2", "label": "الفصل الثاني", "title": "القرآن طريقنا لمعرفة الله",
+    "subtopics": [
+        {
+            "id": "ch2-m1", "title": "المبحث الأول", "subtitle": "معرفة الله، الثقة بالله، معنى لا إله إلا الله",
+            "questions": [
+                { "number": 26, "question": "التشخيص السليم لواقع الأمة هو أننا ضحية لـ..", "options": ["عقائد باطلة وثقافة مغلوطة", "نعيش أزمة ثقة بالله", "كل ما سبق صحيح"], "correctIndex": 2 },
+                { "number": 27, "question": "مصير الأمة المؤكد الذي سيحدث لو خالفنا كتاب الله وعترة رسوله", "options": ["جهنم وبئس المصير", "الضلال", "أن نكون أتباعاً لليهود"], "correctIndex": 1 },
+                { "number": 28, "question": "ماذا حدث مع بني إسرائيل حتى فسق أكثرهم واستبدل الله بهم غيرهم وجردهم من كل ما منحهم", "options": ["قتلوا الأنبياء", "كفروا بالله", "قست قلوبهم", "كل ماسبق"], "correctIndex": 3 },
+                { "number": 29, "question": "من أسباب أزمة الثقة بالله", "options": ["قلة معرفتنا بالله", "قسوة القلوب", "كل ماسبق"], "correctIndex": 2 },
+                { "number": 30, "question": "من نتائج قسوة القلوب", "options": ["سيطرة الغفلة على الإنسان ونسيان الله والبعد عنه", "نسمع كلام الله ولا نلقي له بال", "كل ماسبق"], "correctIndex": 0 },
+                { "number": 31, "question": "ما علاج قسوة القلوب", "options": ["أن نخضع لذكر الله", "أن نمتلئ خشية لله", "أن نمتلئ حباً لله", "كل ماسبق"], "correctIndex": 3 },
+                { "number": 32, "question": "الآيات التي نحصل من خلالها على معرفة الله بالشكل الكافي هي الآيات التي تتحدث عن", "options": ["ألوهية الله", "نعم الله", "عن الله وبأنه جدير أن يثق به عباده", "كل ماسبق"], "correctIndex": 3 },
+                { "number": 33, "question": "\"ملك يوم الدين\" تعني أن الله من يجب أن نلتجئ له ونخاف منه", "options": ["صح ✓", "خطأ ✕"], "correctIndex": 0 },
+                { "number": 34, "question": "معنى \"سنة\" في قوله تعالى \"لا تأخذه سنة ولا نوم\"", "options": ["النوم", "أول النوم", "القيلولة", "ليس مما سبق"], "correctIndex": 1 },
+                { "number": 36, "question": "معنى \"لا يؤوده\"", "options": ["لا يتعبه", "لا يعتنيه"], "correctIndex": 0 },
+                { "number": 37, "question": "كيف يتعامل البعض مع آيات الله", "options": ["بالتغافل عنها والانشغال بأشياء أخرى", "بالتهرب من توجيهات الله", "كل ماسبق"], "correctIndex": 2 },
+                { "number": 38, "question": "من أخطر ما يدفع الإنسان إلى الابتعاد عن توجيهات الله", "options": ["الغفلة", "الشيطان", "الولاءات الخاطئة", "كل ماسبق"], "correctIndex": 3 },
+                { "number": 40, "question": "دين الله ليس فقط من أجل أن ندخل الجنة", "options": ["صح ✓", "خطأ ✕"], "correctIndex": 0 },
+                { "number": 41, "question": "فيه رحمة وحكمة وشرف وخير ولا تحمى الديار وتصان الأعراض إلا به", "options": ["ذكر الله", "اتباع القرآن", "الجهاد", "كل ماسبق"], "correctIndex": 2 },
+                { "number": 42, "question": "هي وضع الشيء في موضعه", "options": ["الثقافة", "الحكمة", "الهدى"], "correctIndex": 1 },
+                { "number": 43, "question": "من أهمية لا إله إلا الله", "options": ["كلمة الإقرار وبطاقة الدخول إلى الإسلام", "تجعلك تكفر بكل من يبرز لك إلهاً غير الله", "ترسيخ الانشداد لله", "كل ماسبق"], "correctIndex": 3 },
+                { "number": 44, "question": "من معايير علمنا وإيماننا بـ لا إله إلا الله", "options": ["الاستجابة الكاملة لله", "الخوف من الله وحده", "الرغبة فيما عند الله وحده", "كل ماسبق"], "correctIndex": 3 },
+                { "number": 45, "question": "نتائج وتداعيات ضعف إيماننا بـ لا إله إلا الله", "options": ["ضعف الثقة بالله", "سيطرة الباطل", "كل ماسبق", "ليس مما سبق"], "correctIndex": 2 }
+            ]
+        }
+    ]
+},
+{
+    "id": "ch3", "label": "الفصل الثالث", "title": "معرفة الله، نعم الله",
+    "subtopics": [
+        {
+            "id": "ch3-m1", "title": "المبحث الأول", "subtitle": "التوجيهات الإلهية وأهميتها في تطور الأمة وحمايتها وحفظ كرامتها واستقلالها",
+            "questions": [
+                { "number": 48, "question": "حرف بوصلة التفكير في مخلوقات الله شكل ضربة قاضية للأمة فأصبحنا..", "options": ["نبحث عن دلائل وجود الله", "أهملنا الحكمة من خلق الإنسان", "غفلنا عن الهدف الحقيقي للتفكر في مخلوقات الله", "كل ماسبق"], "correctIndex": 3 },
+                { "number": 49, "question": "عدم فهمنا للدين جعلنا نتقبل ما يقوله الآخرون عن ديننا أنه دين متخلف وأنه أفيون الشعوب", "options": ["صح ✓", "خطأ ✕"], "correctIndex": 0 },
+                { "number": 50, "question": "أصبح الواحد منا يرى نفسه متحضراً بمقدار ما يتحلل من قيم دينه ولهذا أصبح في المجتمع الإسلامي...", "options": ["شباب فاسد", "علمانيون يتنكرون للدين", "أولياء لليهود", "كل ماسبق"], "correctIndex": 3 },
+                { "number": 51, "question": "هو دراسة الأشياء وفهمها", "options": ["العبادة", "الاختراع", "التفكر", "التجربة"], "correctIndex": 2 },
+                { "number": 52, "question": "الحاجة تفيد في مجالين هما", "options": ["معرفتنا بالله", "الإبداع والاختراع", "معرفة أعدائنا", "الاختيار الأول والثاني", "كل ماسبق"], "correctIndex": 3 },
+                { "number": 53, "question": "مالذي حصل عندما فرط المسلمون في مسؤوليتهم في عمارة الأرض", "options": ["تحرك الغربيون بحضارة خالية من المبادئ", "استغل اليهود الثروات الصناعية", "هيمن اليهود على المسلمين وثرواتهم", "ملأ اليهود الدنيا بالمعاملات المحرمة مثل الربا", "كل ماسبق"], "correctIndex": 4 }
+            ]
+        },
+        {
+            "id": "ch3-m2", "title": "المبحث الثاني", "subtitle": "معرفة الله وعلاقتها بعمارة الأرض",
+            "questions": [
+                { "number": 54, "question": "معرفة الله وعلاقتها بعمارة الأرض علاقة...", "options": ["سببية", "تكاملية", "طردية", "عكسية", "الاختيار الأول والثالث", "الاختيار الأول والثاني"], "correctIndex": 4 },
+                { "number": 55, "question": "من الذي أطلق مقولة \"الدين أفيون الشعوب\"", "options": ["اليهود والنصارى", "علماء السوء", "كل ماسبق"], "correctIndex": 2 },
+                { "number": 56, "question": "سبب مقولة \"الدين أفيون الشعوب\"", "options": ["علماء السوء والأخطاء الثقافية", "الحكام الجاهلون الظالمون", "نحن عندما لا نفهم ديننا", "كل ماسبق"], "correctIndex": 3 },
+                { "number": 57, "question": "السبب لعدم فهمنا للدين هو أننا", "options": ["ابتعدنا عن مصدر الهداية الحقيقية", "اتخذنا اليهود أولياء", "تصديق مقولة الدين أفيون الشعوب"], "correctIndex": 0 },
+                { "number": 58, "question": "من الأخطاء الثقافية التي ضربت الأمة", "options": ["عدم تقديم الدين بصورته الكاملة والحقيقية", "نظرتنا للحياة عن طريق كتب الترغيب والترهيب", "النظرة المغلوطة للدين والحياة", "كل ماسبق"], "correctIndex": 3 },
+                { "number": 59, "question": "هو أن تملك الدنيا ولا تملكها", "options": ["القناعة", "الزهد", "الحلم", "التقوى"], "correctIndex": 1 }
+            ]
+        }
+    ]
+},
+{
+    "id": "ch4", "label": "الفصل الرابع", "title": "معرفة الله \"عظمة الله\"",
+    "subtopics": [
+        {
+            "id": "ch4-m1", "title": "المبحث الأول", "subtitle": "أسس معرفة عظمة الله وحاكميته",
+            "questions": [
+                { "number": 60, "question": "معرفة عظمة الله تكون من خلال", "options": ["معرفة ما تكلم الله عن نفسه", "قراءة القرآن", "التدبر في مخلوقات الله", "كل ماسبق"], "correctIndex": 3 },
+                { "number": 61, "question": "من أسس الثقافة...", "options": ["أن نتولى الله التولي الحقيقي", "أن نثق بالله ونكون من أولياءه", "كل ماسبق"], "correctIndex": 2 },
+                { "number": 62, "question": "المنيع الذي لا يقهر.. لا يغلب ولا يغالب", "options": ["الحكيم", "العزيز", "الظاهر"], "correctIndex": 1 },
+                { "number": 63, "question": "الله ظاهر لعباده ومخلوقاته بس بحاجة إلى أن نستدل على وجوده بأي شيء من مخلوقاته.", "options": ["صح ✓", "خطأ ✕"], "correctIndex": 1 },
+                { "number": 64, "question": "من أسماء الله الحسنى الحكيم ويعني أن الله حكيم في تدبيره وفي تشريعاته", "options": ["صح ✓", "خطأ ✕"], "correctIndex": 0 },
+                { "number": 65, "question": "لا يمكن أن يرى ولا أن يحس ولا يجس ولا يلمس.. من معنى اسم الله", "options": ["القوي", "الباطن", "العزيز", "الآخر"], "correctIndex": 1 },
+                { "number": 66, "question": "لا يصح أن نطلق كلمة القديم على الله", "options": ["لما فيها من إيهام بالعمق الزمني", "لأنها لم ترد في القرآن الكريم", "لأن من معانيها المهترئ الذي لا يصلح لشي"], "correctIndex": 0 },
+                { "number": 67, "question": "علماء أهل الكلام هم الذين", "options": ["يقدمون القرآن قبل العقل", "يقدمون العقل قبل القرآن"], "correctIndex": 1 },
+                { "number": 68, "question": "الأشياء التي نعرف الله بها", "options": ["الفطرة", "الرسل", "الكتب السماوية", "كل ماسبق"], "correctIndex": 3 },
+                { "number": 68.5, "displayNum": "68", "question": "الآيات التي ذكرت بالقرآن للدلالة على وجود الله.. إنما جاءت للتأكيد على قدرة الله وليس للاستدلال على وجوده", "options": ["صح ✓", "خطأ ✕"], "correctIndex": 0 },
+                { "number": 69, "question": "المقصود بعرش الله", "options": ["السلطان والمملكة", "موضع الجلوس", "مقام الله"], "correctIndex": 0 },
+                { "number": 70, "question": "السلطة ملك للشعب", "options": ["صح ✓", "خطأ ✕"], "correctIndex": 1 },
+                { "number": 71, "question": "هو الحكم الذي تكون الحاكمية لله وحده وأن لا تقبل إلا من له الشرعية من الله أن يحكم في أرضه", "options": ["الحكم الديمقراطي", "الحكم الثيوقراطي"], "correctIndex": 1 }
+            ]
+        },
+        {
+            "id": "ch4-m2", "title": "المبحث الثاني", "subtitle": "أسماء الله الحسنى وأهميتها",
+            "questions": [
+                { "number": 73, "question": "دخول \"ال\" على اسم الله الملك تفيد", "options": ["الاختصاص", "التعميم", "التعريف"], "correctIndex": 0 },
+                { "number": 74, "question": "ملك الله قائم من منطلق..", "options": ["القسوة", "القوة", "الرحمة", "العزة"], "correctIndex": 2 },
+                { "number": 75, "question": "المنزه المعظم.. الذي نفتخر بعبوديتنا له.. من معاني اسم الله", "options": ["العزيز", "القدوس", "المتكبر", "القوي"], "correctIndex": 1 },
+                { "number": 76, "question": "المسيطر على كل شي.. من معاني اسم الله", "options": ["المؤمن", "المهيمن", "المقتدر"], "correctIndex": 1 },
+                { "number": 77, "question": "كلمة بارئ تشبه معنى كلمة....... فيما تعنيه من الإبداع أو أنه فاطر ما خلقه", "options": ["المصور", "الخالق", "المقتدر"], "correctIndex": 1 },
+                { "number": 78, "question": "أن تخلق الشيء على نحو معين وخلقها على كيفية معينة ابتدعها هو بدون مثال سابق", "options": ["البارئ", "المصور", "البارئ المصور", "الخالق"], "correctIndex": 2 }
+            ]
+        }
+    ]
+},
+{
+    "id": "ch5", "label": "الفصل الخامس", "title": "معرفة الله وعده ووعيده",
+    "subtopics": [
+        {
+            "id": "ch5-m1", "title": "المبحث الأول", "subtitle": "الوعد والوعيد في القرآن الكريم",
+            "questions": [
+                { "number": 79, "question": "الوعد والوعيد يبدأ من الدنيا وينتهي بالآخرة", "options": ["صح ✓", "خطأ ✕"], "correctIndex": 0 },
+                { "number": 80, "question": "هو كل ما وعد الله به عباده من نعيم وثواب جزاء التزامهم بتوجيهاته", "options": ["الوعد", "الوعيد"], "correctIndex": 0 },
+                { "number": 81, "question": "هو كل تهديد بعقاب من الباري عزوجل أو لعن أو طرد من رحمة الله", "options": ["الوعد", "الوعيد"], "correctIndex": 1 },
+                { "number": 82, "question": "لماذا جاء الوعد والوعيد في القرآن الكريم", "options": ["وسيلة للتعريف بالله وضرورة الالتزام بتوجيهاته التي فرضها", "حتى لا تظل الأمور الالتزام بالتوجيهات عشوائية", "ليعزز أن لكل نفس ما كسبت", "كل ماسبق"], "correctIndex": 3 },
+                { "number": 83, "question": "وردت قصة أبينا آدم في القرآن", "options": ["لأخذ العظة والعبرة", "ليعلمنا الله كيف نتحمل تبعات أعمالنا"], "correctIndex": 1 },
+                { "number": 84, "question": "من آثار مخالفة آدم لأمر الله حين نهاه أن يأكل من الشجرة", "options": ["شقي هو وزوجته", "أخرجهم الله من الجنة", "نزعت عنهما ملابسهما", "كل ماسبق"], "correctIndex": 3 },
+                { "number": 85, "question": "الله يعاقب الإنسان على أعماله في الدنيا", "options": ["ليخاف من المعصية ويخاف من التفريط والتقصير", "ليدرك أن الله شديد العقاب", "حتى لا يتبع طريق الهوى"], "correctIndex": 0 },
+                { "number": 86, "question": "واقع المسلمين هو واقع خزي", "options": ["صح ✓", "خطأ ✕"], "correctIndex": 0 },
+                { "number": 89, "question": "الآية الدالة التي تتحدث عن العقوبات في الدنيا وتنذر بمثيلها في الآخرة قوله تعالى :", "options": ["\"وقل اعملوا فسيرى الله عملكم\"", "\"واستعينوا بالصبر والصلاة\"", "\"لهم في الدنيا خزي ولهم في الآخرة عذاب عظيم\"", "ليس مما سبق"], "correctIndex": 2 },
+                { "number": 90, "question": "ربط الله بين الشقاء في الدنيا وضنك المعيشة في الآخرة", "options": ["صح ✓", "خطأ ✕"], "correctIndex": 0 },
+                { "number": 91, "question": "هو الصبر الذي يكون في سبيل الله... أن وإن كنت تعاني من أجل الحق والوقوف ضد أعداء الله", "options": ["صبر إيجابي", "صبر سلبي"], "correctIndex": 0 },
+                { "number": 92, "question": "صبر يعقبه مذلة وذل وشقاء في الدنيا ومعيشة ضنكاً في الآخرة.. ويكون بدون مقابل", "options": ["صبر إيجابي", "صبر سلبي"], "correctIndex": 1 },
+                { "number": 93, "question": "سبب الشقاء والخزي الذي نحن فيه كمسلمين هو..", "options": ["جزاء إعراضنا عن ذكر الله", "اتباعنا لليهود", "عدم اتخاذ موقف ضد أعداء الله"], "correctIndex": 2 },
+                { "number": 94, "question": "لوعيد الله في الدنيا أشكال كثيرة منها", "options": ["عقوبات معنوية", "عقوبات مادية", "آلام نفسية \"قسوة القلوب\"", "كل ماسبق"], "correctIndex": 3 },
+                { "number": 95, "question": "تكررت قصة آدم في القرآن كثيراً ليوضح الله لنا قضية مهمة وهي", "options": ["أن الناس يحصل لهم في هذه الدنيا عقوبات جزاء أعمالهم", "أن من يتخذ الشيطان ولياً يكون مصيره الهلاك", "أن عصيان أمر من أوامر الله لا يقبل التوبة"], "correctIndex": 0 },
+                { "number": 96, "question": "قال تعالى \"ولو أن أهل القرى ءامنوا واتقوا لفتحنا عليهم بركات من الأرض والسماء\" تدل الآية على", "options": ["الترغيب هو جانب من جوانب الهداية", "أن الإيمان والتقوى يجلب كل ما نحب ونرغب في هذه الدنيا", "كل ماسبق", "ليس مما سبق"], "correctIndex": 2 },
+                { "number": 97, "question": "جعل الإسلام القرض بمثابة", "options": ["صدقة", "عطاء أو هدية", "ربا", "زكاة"], "correctIndex": 0 },
+                { "number": 98, "question": "قال تعالى \"يا أيها الذين ءامنوا اتقوا الله وذروا ما بقي من الربا إن كنتم مؤمنين. فإن لم تفعلوا فأذنوا بحرب من الله ورسوله\" في هذه الآية يخبرنا الله أنه", "options": ["سيحارب عباده إذا لم يتركوا الربا", "سيعذب كل من تعامل بالربا ويكون مصيره النار", "ستزول البركات وتنقص الثمار"], "correctIndex": 0 },
+                { "number": 99, "question": "شن الله الحرب على الناس", "options": ["لأنهم استساغوا الربا", "لأنهم أعرضوا عن ذكره", "لأنهم اتخذوا اليهود والنصارى أولياء"], "correctIndex": 0 },
+                { "number": 100, "question": "من أضرار الربا", "options": ["يحطم العلاقات بين المسلمين", "تكديس الأموال في فئة محددة تتحكم في الموقف السياسي للأمة", "كل ماسبق"], "correctIndex": 2 },
+                { "number": 101, "question": "حذر الله من الربا لأن الجانب الاقتصادي للمسلمين مهم ليقفوا في وجه أعدائهم ويقوموا بواجباتهم لنصر دين الله", "options": ["صح ✓", "خطأ ✕"], "correctIndex": 0 },
+                { "number": 102, "question": "من آثار الربا", "options": ["ضيق المعيشة", "قلة البركات", "ضيق النفوس والقلوب", "تدني المنتجات", "كل ماسبق"], "correctIndex": 4 },
+                { "number": 103, "question": "أن الناس يخافون من العاجلة أكثر مما يخافون الآجل وخوفهم هذا يدفعهم إلى", "options": ["ألا يقعوا في العقوبة الآجلة", "أن يتمادوا في معصية الله"], "correctIndex": 1 },
+                { "number": 104, "question": "الرفض لبعض آيات القرآن يعني", "options": ["الكفر", "الشرك"], "correctIndex": 0 },
+                { "number": 105, "question": "نتيجة الكفر ببعض آيات الله", "options": ["الخزي في الدنيا.", "جهنم", "انتصار أعدائنا علينا"], "correctIndex": 0 },
+                { "number": 106, "question": "الخزي سببه أننا نؤمن ببعض الكتاب ونكفر ببعض", "options": ["صح ✓", "خطأ ✕"], "correctIndex": 0 },
+                { "number": 107, "question": "الخزي في الدنيا يعقبه رفعة في الآخرة", "options": ["صح ✓", "خطأ ✕"], "correctIndex": 1 },
+                { "number": 108, "question": "عقاب الله لبني إسرائيل بالتيه كان نتيجة", "options": ["التفريط والعصيان", "قتلهم أنبياء الله", "كفرهم بالكتاب"], "correctIndex": 0 },
+                { "number": 109, "question": "كانت مدة تيه بني إسرائيل...... وتاهوا في........ والسبب........", "options": ["40، صحراء سينا، تمردهم على أنبياء الله", "40، صحراء سينا، امتناعهم عن دخول الأرض المقدسة", "40، بلاد الشام، امتناعهم عن دخول الأرض المقدسة", "ليس مما سبق"], "correctIndex": 1 },
+                { "number": 110, "question": "تيه الأمة الإسلامية يعتبر تيه", "options": ["فكري", "ثقافي", "فكري وثقافي"], "correctIndex": 2 },
+                { "number": 111, "question": "الدليل على أن المسلمين في حالة تيه..", "options": ["عدم اتخاذ موقف ضد الأمريكان واليهود وما يعملوه في الأمة الإسلامية", "الفساد الأخلاقي في المجتمع المسلم"], "correctIndex": 0 },
+                { "number": 112, "question": "\"لا عبرة بالمجاميع\".. تعني أنه ليس بالضرورة أن يتحرك الناس كلهم حتى تتحرك أنت", "options": ["صح ✓", "خطأ ✕"], "correctIndex": 0 },
+                { "number": 113, "question": "سطر الله كلام الرجلين وكلام مؤمن آل فرعون مع كلام موسى", "options": ["لأن الكلمة التي توجه وترشد لها أهميتها للحفاظ على الأمة وبناءها", "لأنهم كانوا ذو مقام رفيع عند قومهم", "لأنهم كانوا مسلمين"], "correctIndex": 0 },
+                { "number": 114, "question": "سطر الله خطة الرجلين لأنها كانت خطة............. وأصبح مطلوباً من بني إسرائيل أن يسيروا عليها", "options": ["عملية", "عسكرية", "عملية وعسكرية", "توجيهية وإرشادية"], "correctIndex": 3 },
+                { "number": 115, "question": "لقد توعد الله القاعدين والساكتين بعقوبات أقلها.....", "options": ["الخزي في الدنيا", "العذاب في الآخرة", "الخزي في الدنيا والعذاب في الآخرة"], "correctIndex": 2 }
+            ]
+        },
+          {
+            "id": "ch5-m2", "title": "المبحث الثاني", "subtitle": "أهمية الإيمان باليوم الآخر في معرفة الله",
+            "questions": [
+                { "number": 116, "question": "جهنم مكان تنعدم فيه..", "options": ["الرحمة", "الراحة", "كل ماسبق"], "correctIndex": 2 },
+                { "number": 117, "question": "دعاء الإمام زين العابدين سلام الله عليه يعلمنا..", "options": ["كيف نستعيذ بالله من نار جهنم", "كيف نزداد يقيناً بالله", "أن نعمل لليوم الآخر"], "correctIndex": 0 },
+                { "number": 118, "question": "قال تعالى \"والذين لم يستجيبوا له لو أن لهم ما في الأرض جميعاً ومثله معه لافتدوا به\" موضوع الاستجابة يكون في...... والذي دعانا الله للاستجابة له هو.....", "options": ["الدنيا، هدي رسول الله", "الدنيا، القرآن الكريم", "الآخرة، القرآن الكريم", "ليس مما سبق"], "correctIndex": 1 },
+                { "number": 119, "question": "رد الكافرين عندما تسألهم الملائكة مالذي أدى بهم إلى جهنم.. يقولون:", "options": ["كنا نسمع آيات الله ونعرض عنها", "كنا نصد المسلمين عن دينهم", "كنا نتخذ الكافرين أولياء", "كل ماسبق"], "correctIndex": 3 },
+                { "number": 120, "question": "سور القرآن مليئة بالحديث بالإنذار لعباد الله من اليوم الآخر", "options": ["ليهدينا إلى ما يبعدنا عن سوء الحساب ومن عذاب جهنم", "لتخويف الناس من بطش الله", "كل ماسبق"], "correctIndex": 2 },
+                { "number": 121, "question": "لم يعد للكافرين أي عذر يوم القيامة لأنه", "options": ["قد جاءتهم الرسل يحذروهم من الآخرة ويتلون عليهم آيات الله", "قد أنزل الله الكتب السماوية لهداية الناس", "لأن الله قد ضرب لنا مثلاً بالأمم من قبلنا وكيف كانت عاقبتهم", "كل ماسبق"], "correctIndex": 3 },
+                { "number": 122, "question": "تأتي ظلمات مطبقة على من مصيرهم إلى النار.. ويأتي نور إلى من مصيره إلى الجنة وتكون هذه المرحلة...", "options": ["قبل الانتقال إلى الجنة والنار", "عند البعث من القبور", "أثناء الحساب"], "correctIndex": 0 },
+                { "number": 123, "question": "من القائل في قوله تعالى \"قيل ارجعوا وراءكم والتمسوا نوراً\"", "options": ["الله", "الملائكة", "المسلمين للمنافقين"], "correctIndex": 2 },
+                { "number": 124, "question": "هم صف من المؤمنين أتيحت لهم فرصة النجاة والفلاح أكثر من غيرهم ولكنهم خسروا لأنهم اتجهوا في هذه الدنيا باتجاهات أخرى", "options": ["المنافقين", "اليهود", "المحسوبين", "كل ماسبق"], "correctIndex": 0 },
+                { "number": 125, "question": "قال تعالى \"إذا رأتهم من مكان بعيد سمعوا لها تغيظاً وزفيراً\".. معنى تغيظاً", "options": ["الصوت المتغيظ الذي يمتلئ غيظاً على الطرف الآخر", "صوت الإنسان عندما يخرج الهواء من فمه قوياً", "عودة النفس بقوة إلى الداخل"], "correctIndex": 0 },
+                { "number": 126, "question": "عدد أبواب جهنم...", "options": ["7", "8", "لا يعلم عددها إلا الله"], "correctIndex": 0 },
+                { "number": 127, "question": "لفظ يطلق على الجنود المدربين تدريباً خاصاً", "options": ["زبانية", "كمندوز", "جلادين"], "correctIndex": 0 },
+                { "number": 128, "question": "يتمنى أهل جهنم أن يكون عذابهم من نوع ما تمتلكه أمريكا من أسلحة", "options": ["صح ✓", "خطأ ✕"], "correctIndex": 0 },
+                { "number": 129, "question": "قال تعالى \"دعوا هنالك ثبوراً\" معناها", "options": ["دعوا بالهلاك", "دعوا بالرحمة", "استغاثوا الملائكة بأن تخرجهم"], "correctIndex": 0 },
+                { "number": 130, "question": "معنى واثبوراه \"واهلاكاه\"", "options": ["صح ✓", "خطأ ✕"], "correctIndex": 0 },
+                { "number": 131, "question": "يخوفنا الله من نار جهنم", "options": ["لأنه رحيم بنا", "لأنه لا يريد لنا أن نقع في العذاب", "لكي يدعونا إلى الاستقامة", "كل ماسبق"], "correctIndex": 3 },
+                { "number": 132, "question": "شراب المجرمين في جهنم يكون \"الصديد\"", "options": ["صح ✓", "خطأ ✕"], "correctIndex": 0 },
+                { "number": 133, "question": "هو عصارة أهل النار وكل فضلات أجسامهم المحترقة الملتهبة", "options": ["الصديد", "الزقوم"], "correctIndex": 0 },
+                { "number": 134, "question": "شجرة تنبت في جهنم.. تتغذى على النار وتثمر ناراً وتورق ناراً", "options": ["شجرة الزيتون", "شجرة المنتهى", "شجرة الزقوم"], "correctIndex": 2 },
+                { "number": 135, "question": "من أوصاف شجرة الزقوم", "options": ["تخرج في أصل الجحيم", "ثمارها رؤوس الشياطين", "شديدة المرارة", "تغلي في البطون كغلي الزيت المحترق", "كل ما سبق"], "correctIndex": 4 },
+                { "number": 136, "question": "قال تعالى \"لهم من فوقهم ظلل من النار ومن تحتهم ظلل\" هذا وصف ل...", "options": ["ملابس أهل النار", "مساكن أهل النار", "ليس مماسبق"], "correctIndex": 1 },
+                { "number": 137, "question": "المنافقين في الدرك الأسفل من النار", "options": ["لأنهم أخبث عباد الله وأسوأ البشر", "لأنهم يظهرون الإسلام ويبطنون العداوة", "كل ماسبق"], "correctIndex": 2 },
+                { "number": 138, "question": "هم فئة تعمل في أوساط المسلمين تثبطهم عن نصر دين الله وتشيع الشائعات التي تقلق نفوسهم", "options": ["اليهود", "المنافقين", "المشركين"], "correctIndex": 1 },
+                { "number": 139, "question": "استحق أهل النار أن يدخلوها لأنهم", "options": ["كفروا بنعم الله", "كفروا بآيات الله", "صدوا عن سبيل الله", "لم يستجيبوا لله", "كل ماسبق"], "correctIndex": 4 },
+                { "number": 140, "question": "...... هم الطائفة الوحيدة التي تؤمن بخلود أهل النار في النار", "options": ["الوهابية", "الزيدية", "البهائية", "ليس مما سبق"], "correctIndex": 1 },
+                { "number": 141, "question": "لا يعذب الكافر على اسمه وإنما على أعماله", "options": ["صح ✓", "خطأ ✕"], "correctIndex": 0 },
+                { "number": 142, "question": "المسلمين يعذبون أيضاً على أعمالهم كالكافرين", "options": ["صح ✓", "خطأ ✕"], "correctIndex": 0 },
+                { "number": 143, "question": "الإسلام ليس رخصة للعصاة والمجرمين", "options": ["صح ✓", "خطأ ✕"], "correctIndex": 0 },
+                { "number": 144, "question": "الظلم هو نفسه سواء ارتكبه مسلم أو كافر.. ولا يصح أن نقول عن الله كما نقول عن أمريكا أنها \"تكيل بمكيالين\"", "options": ["صح ✓", "خطأ ✕"], "correctIndex": 0 },
+                { "number": 145, "question": "لا ينفق شيء من الباطل إلا إذا قدم إلينا باسم", "options": ["الدين", "الجودة", "السلام"], "correctIndex": 0 },
+                { "number": 146, "question": "يقول اليهود أنهم سيبقوا في جهنم على أكثر قول لديهم مدة أربعين سنة وهذه المدة تدل على عدد الأيام التي", "options": ["تاهوا فيها بني إسرائيل", "عبدوا فيها العجل", "كل ماسبق", "ليس مماسبق"], "correctIndex": 1 },
+                { "number": 147, "question": "المشكلة الأساسية في الذنوب بالنسبة لصاحبها أنها تجعله في وضعية يكون فيها معرضاً عن هدى الله", "options": ["صح ✓", "خطأ ✕"], "correctIndex": 0 },
+                { "number": 148, "question": "يتوجه الكلام كثيراً إلى الشرك", "options": ["ليقلعه من نفوس المشركين", "ليبتعد المشركون عن الصد عن سبيله", "ليلزم المشركين بدين الله", "لتزكية نفوس المشركين", "كل ماسبق"], "correctIndex": 4 },
+                { "number": 149, "question": "كل هدى الله يتوجه إلينا نحن المسلمين", "options": ["لأننا نحن المحتاجون إليه", "لأن كل عمل باطل هو فساد علينا نحن وضد مصالحنا", "كل ماسبق"], "correctIndex": 2 },
+                { "number": 150, "question": "هي الإقلاع عن المعصية والرجوع إلى الله والندم على ارتكاب المعاصي", "options": ["التقوى", "التوبة", "الهداية"], "correctIndex": 1 },
+                { "number": 151, "question": "المعنى الحقيقي للنفاق هو موالاة أعداء الله بشكل علني", "options": ["صح ✓", "خطأ ✕"], "correctIndex": 0 },
+                { "number": 152, "question": "معنى مذبذبين", "options": ["متفرقين", "مشتتين", "لا ينتمون إلى المسلمين ولا إلى الكافرين", "كاذبين"], "correctIndex": 2 },
+                { "number": 153, "question": "يتوعد الله بالعذاب الشديد والعظيم لمن..", "options": ["قتل مؤمناً متعمداً", "لم يلتزم بحدود الله", "لا يقف عند حدود الله ولا يلتزم بما حدده الله في قضية المواريث", "كل ماسبق"], "correctIndex": 3 },
+                { "number": 154, "question": "سبيل النجاة الذي رسمه الله لنا هو..", "options": ["الرجوع إلى القرآن الكريم", "البراءة من أعداء الله", "كل ماسبق"], "correctIndex": 2 },
+                { "number": 155, "question": "ماذا نحتاج لكي نقوم بتوجيهات الله؟", "options": ["أن ننمي في أنفسنا حالة الخشية من الله والخوف منه.", "المحبة والرغبة فيما عند الله", "كل ماسبق"], "correctIndex": 2 },
+                { "number": 156, "question": "ماذا يحدث عندما نتنصل عن مسؤولية القيام بتوجيهات الله", "options": ["نخاف من الآخرين أكثر من خوفنا من الله", "نكون في حالة غير إيمانية", "كل ماسبق"], "correctIndex": 2 }
+            ],
+            "note": {
+                "title": "📌 ملاحظة هامة (صفحة 135 — سبل النجاة)",
+                "items": [
+                    "1- المجاهدة في سبيل الله بالنفس والمال.",
+                    "2- الإنفاق في السراء والضراء وكظم الغيظ والعفو عن الناس.",
+                    "3- الاستغفار والتوبة وعدم الإصرار على المعصية.",
+                    "4- الصبر والجهاد.",
+                    "5- الأمر بالمعروف والنهي عن المنكر والإيمان بالله.",
+                    "6- تقوى الله والاعتصام بحبل الله \"القرآن\".",
+                    "7- إقامة الصلاة والإنفاق بالسر والعلن."
+                ]
+            }
+        }
+    ]
+},
+{
+    "id": "ch6", "label": "الفصل السادس", "title": "معرفة النبي صلوات الله عليه وعلى آله",
+    "subtopics": [
+        {
+            "id": "ch6-m1", "title": "المبحث الأول", "subtitle": "معالم الدين الإسلامي",
+            "questions": [
+                { "number": 157, "question": "من أهم معالم الدين الإسلامي", "options": ["التحرر من الطاغوت والاستكبار", "الإسلام دين وعي ونور وبصيرة", "الإسلام دين الزكاة والطهارة ومكارم الأخلاق", "الإسلام دين عدل ودين مسؤولية", "كل ماسبق"], "correctIndex": 4 },
+                { "number": 158, "question": "ماهي أكبر مشكلة نعانيها في هذا العصر", "options": ["هيمنة المستكبرين والطاغوت على أمتنا الإسلامية", "انتشار الفساد الخلقي", "اتخاذ اليهود والنصارى أولياء"], "correctIndex": 0 },
+                { "number": 159, "question": "الدخول الصادق في الإسلام يعني الخروج والتحرر من سيطرة الطاغوت", "options": ["صح ✓", "خطأ ✕"], "correctIndex": 0 },
+                { "number": 160, "question": "هي إظهار البراءة من أعداء الله ورسوله بشكل علني وواضح وصريح", "options": ["البراءة", "الجهاد"], "correctIndex": 0 },
+                { "number": 161, "question": "اختار الله يوم........ للإعلان وإظهار البراءة من أعداء الله", "options": ["الحج الأكبر \"يوم عرفة\"", "يوم الجمعة", "يوم الخميس"], "correctIndex": 0 },
+                { "number": 162, "question": "المبادئ والقيم والتعليمات الإلهية ليست للمقايضة.", "options": ["صح ✓", "خطأ ✕"], "correctIndex": 0 },
+                { "number": 163, "question": "ماهو المعلم الذي يفضح العملاء وتشويههم للدين", "options": ["أن الإسلام دين تحرر من الطاغوت", "أن الإسلام دين عدل ومسؤولية", "أن الإسلام دين وعي وبصيرة", "كل ماسبق"], "correctIndex": 3 },
+                { "number": 164, "question": "هي مفاهيم وأفكار مظللة يمكن أن تقدم ضمن كتب أو على منابر المساجد أو عبر وسائل الإعلام", "options": ["الثقافة المغلوطة", "الظلمات", "الفكر الوهابي"], "correctIndex": 0 },
+                { "number": 165, "question": "من أهم الجوانب الرئيسية في الإسلام مسألة....... حتى تستقيم الحياة وتصلح.", "options": ["الجهاد", "تزكية النفوس", "التخلص من تبعية الطاغوت"], "correctIndex": 1 },
+                { "number": 166, "question": "من الجوانب الإيمانية التي تساعد الإنسان على زكاء النفس الإيمان بـ....", "options": ["الله وبألوهيته وربوبيته", "بالله وملكه ورقابته", "بالله وجزاءه وأسمائه الحسنى", "بالمعاد والحساب والجنة والنار", "كل ماسبق"], "correctIndex": 4 },
+                { "number": 167, "question": "الاختلال في الولاء مرده اختلال في زكاء النفوس.", "options": ["صح ✓", "خطأ ✕"], "correctIndex": 0 },
+                { "number": 168, "question": "الذي جعل المنافقين أولياء المشركين واليهود هو نفسياتهن المدنسة", "options": ["صح ✓", "خطأ ✕"], "correctIndex": 0 },
+                { "number": 169, "question": "المفاسد الأخلاقية وسيلة للسيطرة على الشعوب", "options": ["صح ✓", "خطأ ✕"], "correctIndex": 0 },
+                { "number": 170, "question": "لا يكفي الوعي والمعرفة الذهنية إذا لم يترافق معها زكاء للنفوس", "options": ["صح ✓", "خطأ ✕"], "correctIndex": 0 },
+                { "number": 171, "question": "مسؤولية كل من ينتمي إلى الإسلام هي إقامة العدل في هذه الحياة", "options": ["صح ✓", "خطأ ✕"], "correctIndex": 0 }
+            ]
+        }
+    ]
+}
+];
+  let activeChapterIndex = 0;
+let activeSubtopicIndex = 0;
+let userAnswers = {};
+
+function getTotalQuestionsCount() {
+    let count = 0;
+    courseData.forEach(ch => ch.subtopics.forEach(sub => count += sub.questions.length));
+    return count;
+}
+
+function getStats() {
+    const total = getTotalQuestionsCount();
+    let answeredCount = 0;
+    let correctCount = 0;
+    courseData.forEach(ch => {
+        ch.subtopics.forEach(sub => {
+            sub.questions.forEach(q => {
+                if (Object.prototype.hasOwnProperty.call(userAnswers, q.number)) {
+                    answeredCount++;
+                    if (userAnswers[q.number] === q.correctIndex) correctCount++;
+                }
+            });
+        });
+    });
+    return { total, answeredCount, correctCount };
+}
+
+function getChapterStats(chIndex) {
+    let total = 0;
+    let answered = 0;
+    courseData[chIndex].subtopics.forEach(sub => {
+        sub.questions.forEach(q => {
+            total++;
+            if (Object.prototype.hasOwnProperty.call(userAnswers, q.number)) answered++;
+        });
+    });
+    return { total, answered };
+}
+
+function updateDashboard() {
+    const stats = getStats();
+    document.getElementById('stat-answered').textContent = `${stats.answeredCount} / ${stats.total}`;
+    document.getElementById('stat-score').textContent = `${stats.correctCount} من ${stats.total}`;
+}
+
+function selectChapter(chIndex, scrollTop = false) {
+    activeChapterIndex = chIndex;
+    activeSubtopicIndex = 0;
+    renderNavigation();
+    renderQuizArea();
+    renderBottomNav();
+    if (scrollTop) document.getElementById('chapters-nav').scrollIntoView({ behavior: 'smooth' });
+}
+
+function selectSubtopic(subIndex, scrollTop = false) {
+    activeSubtopicIndex = subIndex;
+    renderNavigation();
+    renderQuizArea();
+    renderBottomNav();
+    if (scrollTop) document.getElementById('subtopics-bar').scrollIntoView({ behavior: 'smooth' });
+}
+
+function renderNavigation() {
+    const chaptersNav = document.getElementById('chapters-nav');
+    chaptersNav.innerHTML = '';
+    courseData.forEach((ch, idx) => {
+        const stats = getChapterStats(idx);
+        const btn = document.createElement('button');
+        btn.className = `chapter-tab ${idx === activeChapterIndex ? 'active' : ''}`;
+        btn.onclick = () => selectChapter(idx, false);
+        btn.innerHTML = `
+            <div class="chapter-tab-header">
+                <span class="chapter-tab-label">${ch.label}</span>
+                <span class="chapter-tab-progress">${stats.answered} / ${stats.total}</span>
+            </div>
+            <span class="chapter-tab-title">${ch.title}</span>
+            <span class="chapter-tab-meta">${ch.subtopics.length} مباحث • ${stats.total} سؤالاً</span>
+        `;
+        chaptersNav.appendChild(btn);
+    });
+
+    const currentChapter = courseData[activeChapterIndex];
+    const subtopicsBar = document.getElementById('subtopics-bar');
+    subtopicsBar.innerHTML = '';
+    currentChapter.subtopics.forEach((sub, idx) => {
+        const subBtn = document.createElement('button');
+        subBtn.className = `subtopic-btn ${idx === activeSubtopicIndex ? 'active' : ''}`;
+        subBtn.onclick = () => selectSubtopic(idx, false);
+        subBtn.textContent = `${sub.title} (${sub.questions.length})`;
+        subtopicsBar.appendChild(subBtn);
+    });
+
+    if (currentChapter.subtopics.length > 1) {
+        const allBtn = document.createElement('button');
+        allBtn.className = `subtopic-btn ${activeSubtopicIndex === -1 ? 'active' : ''}`;
+        allBtn.onclick = () => selectSubtopic(-1, false);
+        allBtn.textContent = `عرض كامل ${currentChapter.label}`;
+        subtopicsBar.appendChild(allBtn);
+    }
+}
+
+function renderQuizArea() {
+    const container = document.getElementById('quiz-content');
+    container.innerHTML = '';
+    const currentChapter = courseData[activeChapterIndex];
+    const subtopicsToRender = activeSubtopicIndex === -1 ? currentChapter.subtopics : [currentChapter.subtopics[activeSubtopicIndex]];
+
+    subtopicsToRender.forEach(sub => {
+        const banner = document.createElement('div');
+        banner.className = 'topic-banner';
+        banner.innerHTML = `
+            <div class="topic-banner-info">
+                <h2>${currentChapter.label} — ${sub.title}</h2>
+                <p>${sub.subtitle}</p>
+            </div>
+            <span class="topic-count-badge">${sub.questions.length} سؤالاً</span>
+        `;
+        container.appendChild(banner);
+
+        sub.questions.forEach(q => {
+            const card = document.createElement('div');
+            card.className = 'q-card';
+            const isAnswered = Object.prototype.hasOwnProperty.call(userAnswers, q.number);
+            const selectedIdx = userAnswers[q.number];
+            const badgeNum = q.displayNum ? q.displayNum : q.number;
+
+            let optionsHTML = '';
+            q.options.forEach((optText, optIdx) => {
+                let extraClass = '';
+                let icon = '';
+                let disabledAttr = isAnswered ? 'disabled' : '';
+                if (isAnswered) {
+                    if (optIdx === q.correctIndex) { extraClass = 'is-correct'; icon = '✓'; }
+                    else if (optIdx === selectedIdx) { extraClass = 'is-wrong'; icon = '✕'; }
+                }
+                optionsHTML += `<button class="opt-btn ${extraClass}" ${disabledAttr} onclick="handleAnswer(${q.number}, ${optIdx})"><span>${optText}</span><span class="opt-icon">${icon}</span></button>`;
+            });
+
+            card.innerHTML = `<div class="q-header"><div class="q-badge">${badgeNum}</div><div class="q-title">${q.question}</div></div><div class="options-grid">${optionsHTML}</div>`;
+            container.appendChild(card);
+
+            if (q.number === 154 && sub.note) {
+                const noteCard = document.createElement('div');
+                noteCard.className = 'important-note-card';
+                const itemsHTML = sub.note.items.map(it => `<li>${it}</li>`).join('');
+                noteCard.innerHTML = `<h3>${sub.note.title}</h3><ul>${itemsHTML}</ul>`;
+                container.appendChild(noteCard);
+            }
+        });
+    });
+}
+
+function renderBottomNav() {
+    const bottomNav = document.getElementById('bottom-nav');
+    bottomNav.innerHTML = '';
+    const currentChapter = courseData[activeChapterIndex];
+
+    if (activeSubtopicIndex > 0) {
+        const prevSub = currentChapter.subtopics[activeSubtopicIndex - 1];
+        const prevBtn = document.createElement('button');
+        prevBtn.className = 'nav-step-btn';
+        prevBtn.innerHTML = `→ السابق: ${prevSub.title}`;
+        prevBtn.onclick = () => selectSubtopic(activeSubtopicIndex - 1, true);
+        bottomNav.appendChild(prevBtn);
+    } else if (activeChapterIndex > 0) {
+        const prevCh = courseData[activeChapterIndex - 1];
+        const prevBtn = document.createElement('button');
+        prevBtn.className = 'nav-step-btn';
+        prevBtn.innerHTML = `→ السابق: ${prevCh.label}`;
+        prevBtn.onclick = () => selectChapter(activeChapterIndex - 1, true);
+        bottomNav.appendChild(prevBtn);
+    }
+
+    if (activeSubtopicIndex !== -1 && activeSubtopicIndex < currentChapter.subtopics.length - 1) {
+        const nextSub = currentChapter.subtopics[activeSubtopicIndex + 1];
+        const nextBtn = document.createElement('button');
+        nextBtn.className = 'nav-step-btn next-primary';
+        nextBtn.innerHTML = `الانتقال إلى ${nextSub.title} (${currentChapter.label}) ←`;
+        nextBtn.onclick = () => selectSubtopic(activeSubtopicIndex + 1, true);
+        bottomNav.appendChild(nextBtn);
+    } else if (activeChapterIndex < courseData.length - 1) {
+        const nextCh = courseData[activeChapterIndex + 1];
+        const nextBtn = document.createElement('button');
+        nextBtn.className = 'nav-step-btn next-primary';
+        nextBtn.innerHTML = `الانتقال مباشرة إلى ${nextCh.label}: ${nextCh.title} ←`;
+        nextBtn.onclick = () => selectChapter(activeChapterIndex + 1, true);
+        bottomNav.appendChild(nextBtn);
+    }
+}
+
+function handleAnswer(questionNumber, selectedOptionIndex) {
+    userAnswers[questionNumber] = selectedOptionIndex;
+    updateDashboard();
+    renderNavigation();
+    renderQuizArea();
+}
+
+function resetAll() {
+    userAnswers = {};
+    updateDashboard();
+    renderNavigation();
+    renderQuizArea();
+    renderBottomNav();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+updateDashboard();
+renderNavigation();
+renderQuizArea();
+renderBottomNav();
+</script>
+</body>
+</html>
